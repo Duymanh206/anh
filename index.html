@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Bó hoa ảnh - Chúc mừng 20/10</title>
+    <title>Gửi Ánh Tuyết - Chúc Mừng 20/10 🌸</title>
 
     <!-- Open Graph / Meta SEO -->
-    <meta name="title" content="Bó hoa ảnh - Chúc mừng 20/10">
-    <meta name="description" content="Món quà tương tác 3D lãng mạn và ngọt ngào nhân ngày Phụ nữ Việt Nam 20/10 ❤️">
+    <meta name="title" content="Gửi Ánh Tuyết - Chúc Mừng 20/10 🌸">
+    <meta name="description" content="Món quà ma thuật 3D ngọt ngào tự tay chuẩn bị dành riêng cho cô bé Ánh Tuyết nhân ngày 20/10 ❤️">
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Bó hoa ảnh - Chúc mừng 20/10 🌸">
-    <meta property="og:description" content="Chạm vào bó hoa để khám phá điều kỳ diệu và vũ trụ tình yêu 3D dành riêng cho em!">
+    <meta property="og:title" content="Gửi Ánh Tuyết - Chúc Mừng 20/10 🌸">
+    <meta property="og:description" content="Chạm vào bó hoa ma thuật để khám phá Ngân hà Điều Ước 3D dành riêng cho em!">
     <meta property="og:image" content="assets/bouquet.jpg">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Bó hoa ảnh - Chúc mừng 20/10 🌸">
-    <meta name="twitter:description" content="Món quà tương tác 3D lãng mạn và ngọt ngào nhân ngày Phụ nữ Việt Nam 20/10 ❤️">
+    <meta name="twitter:title" content="Gửi Ánh Tuyết - Chúc Mừng 20/10 🌸">
+    <meta name="twitter:description" content="Món quà ma thuật 3D ngọt ngào tự tay chuẩn bị dành riêng cho cô bé Ánh Tuyết nhân ngày 20/10 ❤️">
     <meta name="twitter:image" content="assets/bouquet.jpg">
     <meta name="theme-color" content="#1a0926">
 
@@ -30,10 +30,11 @@
     <style>
         :root {
             --bg-dark-1: #07040a;
-            --bg-dark-2: #1a0926;
+            --bg-dark-2: #1e0a2d;
             --pink-primary: #ff4d8d;
             --pink-glow: #ff2a85;
-            --pink-light: #ffe6eb;
+            --pink-light: #fff0f3;
+            --pink-cream: #ffe4eb;
             --gold-accent: #ffd166;
             --text-wine: #7a1f3d;
             --font-family: 'Mali', cursive, sans-serif;
@@ -51,7 +52,7 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            background: linear-gradient(135deg, var(--bg-dark-1) 0%, var(--bg-dark-2) 100%);
+            background: linear-gradient(135deg, var(--bg-dark-1) 0%, #150622 50%, var(--bg-dark-2) 100%);
             font-family: var(--font-family);
             color: #ffffff;
             position: relative;
@@ -65,12 +66,12 @@
             width: 100vmax;
             height: 100vmax;
             transform: translate(-50%, -50%);
-            background: radial-gradient(circle, rgba(175, 43, 140, 0.22) 0%, rgba(56, 14, 77, 0.15) 45%, transparent 70%);
+            background: radial-gradient(circle, rgba(255, 105, 180, 0.18) 0%, rgba(138, 35, 115, 0.15) 35%, rgba(20, 5, 30, 0.6) 70%, transparent 95%);
             pointer-events: none;
             z-index: 1;
         }
 
-        /* Starry background canvas */
+        /* Starry & firefly background canvas */
         #stars-canvas {
             position: fixed;
             top: 0;
@@ -81,9 +82,47 @@
             z-index: 2;
         }
 
-        /* ========================
-           PHASE 1: BOUQUET SCREEN
-           ======================== */
+        /* Floating Rose Petals Overlay */
+        .petals-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 3;
+            overflow: hidden;
+        }
+
+        .floating-petal {
+            position: absolute;
+            background: radial-gradient(circle, #ff80ab 20%, #ff4081 100%);
+            border-radius: 60% 40% 70% 30% / 50% 60% 40% 50%;
+            opacity: 0.75;
+            filter: drop-shadow(0 0 6px rgba(255, 64, 129, 0.6));
+            animation: floatPetal linear infinite;
+        }
+
+        @keyframes floatPetal {
+            0% {
+                transform: translateY(105vh) rotate(0deg) scale(0.8);
+                opacity: 0;
+            }
+            15% {
+                opacity: 0.85;
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-10vh) rotate(720deg) scale(1.1);
+                opacity: 0;
+            }
+        }
+
+        /* ==============================================
+           PHASE 1: BÓ HOA MA THUẬT (MÀN HÌNH MỞ ĐẦU)
+           ============================================== */
         #phase-bouquet {
             position: fixed;
             top: 0;
@@ -123,7 +162,7 @@
             }
         }
 
-        /* Floating motion on bouquet */
+        /* Floating animation for bouquet */
         .bouquet-float-wrap {
             position: relative;
             width: 100%;
@@ -147,18 +186,18 @@
         /* Bouquet Image Container */
         .bouquet-image-container {
             position: relative;
-            width: 280px;
-            height: 280px;
-            max-width: 75vw;
-            max-height: 75vw;
+            width: 275px;
+            height: 275px;
+            max-width: 74vw;
+            max-height: 74vw;
             border-radius: 50%;
             padding: 8px;
-            background: radial-gradient(circle, rgba(255, 105, 180, 0.35) 0%, rgba(255, 77, 141, 0.1) 60%, transparent 80%);
-            box-shadow: 0 0 50px rgba(255, 77, 141, 0.4), inset 0 0 25px rgba(255, 255, 255, 0.2);
+            background: radial-gradient(circle, rgba(255, 105, 180, 0.38) 0%, rgba(255, 77, 141, 0.12) 60%, transparent 80%);
+            box-shadow: 0 0 55px rgba(255, 77, 141, 0.45), inset 0 0 30px rgba(255, 255, 255, 0.25);
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: transform 0.2s ease, box-shadow 0.3s ease;
+            transition: transform 0.25s ease, box-shadow 0.3s ease;
         }
 
         .bouquet-img {
@@ -166,11 +205,11 @@
             height: 100%;
             object-fit: cover;
             border-radius: 50%;
-            filter: drop-shadow(0 12px 30px rgba(0, 0, 0, 0.6));
+            filter: drop-shadow(0 14px 32px rgba(0, 0, 0, 0.6));
             pointer-events: none;
         }
 
-        /* Hold ring progress */
+        /* SVG Hold Progress Ring */
         .hold-ring-svg {
             position: absolute;
             top: -15px;
@@ -185,7 +224,7 @@
 
         .hold-ring-bg {
             fill: none;
-            stroke: rgba(255, 255, 255, 0.12);
+            stroke: rgba(255, 255, 255, 0.14);
             stroke-width: 4;
         }
 
@@ -197,10 +236,10 @@
             stroke-dasharray: 880;
             stroke-dashoffset: 880;
             transition: stroke-dashoffset 0.05s linear;
-            filter: drop-shadow(0 0 10px #ff2a85);
+            filter: drop-shadow(0 0 12px #ff2a85);
         }
 
-        /* Press & Hold Vibration Animation */
+        /* Holding state */
         .bouquet-stage.holding .bouquet-float-wrap {
             animation: bouquet-shake 0.1s infinite alternate;
         }
@@ -210,7 +249,7 @@
         }
 
         .bouquet-stage.holding .bouquet-image-container {
-            box-shadow: 0 0 70px rgba(255, 42, 133, 0.8), inset 0 0 35px rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 75px rgba(255, 42, 133, 0.85), inset 0 0 40px rgba(255, 255, 255, 0.6);
         }
 
         @keyframes bouquet-shake {
@@ -219,79 +258,68 @@
             100% { transform: translate(1px, -1.5px) rotate(0.4deg) scale(0.98); }
         }
 
-        /* Small Polaroid Photos nestled around the bouquet */
-        .polaroid-nest {
+        /* ==============================================
+           CÁC TỪ KHÓA DỄ THƯƠNG BAY LÊN (KEYWORD PILLS)
+           ============================================== */
+        .keyword-pill {
             position: absolute;
-            width: 78px;
-            height: 96px;
-            background: #ffffff;
-            border-radius: 6px;
-            padding: 5px 5px 18px 5px;
-            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.55), 0 0 15px rgba(255, 105, 180, 0.4);
+            padding: 8px 16px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1.5px solid rgba(255, 182, 218, 0.6);
+            color: #fff0f5;
+            font-size: 0.95rem;
+            font-weight: 600;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4), 0 0 18px rgba(255, 77, 141, 0.4);
+            text-shadow: 0 0 8px rgba(255, 105, 180, 0.8);
             opacity: 0;
-            transform: scale(0.1) rotate(0deg);
+            transform: scale(0.2) translate(0, 0);
             transition: all 0.75s cubic-bezier(0.34, 1.56, 0.64, 1);
             pointer-events: none;
-            z-index: 5;
+            z-index: 6;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
-        .polaroid-nest img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 3px;
-            display: block;
-        }
-
-        /* Tiny tape decoration */
-        .polaroid-nest::before {
-            content: '';
-            position: absolute;
-            top: -6px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 24px;
-            height: 9px;
-            background: rgba(255, 220, 235, 0.8);
-            border-radius: 2px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-        }
-
-        /* 6 positions around bouquet */
-        .polaroid-pos-0 { top: -20px; left: -10px; --target-rot: -12deg; }
-        .polaroid-pos-1 { top: -25px; right: -15px; --target-rot: 14deg; }
-        .polaroid-pos-2 { top: 40%; left: -42px; --target-rot: -18deg; }
-        .polaroid-pos-3 { top: 38%; right: -42px; --target-rot: 16deg; }
-        .polaroid-pos-4 { bottom: -10px; left: 10px; --target-rot: -8deg; }
-        .polaroid-pos-5 { bottom: -15px; right: 8px; --target-rot: 9deg; }
+        /* 5 positions around the bouquet */
+        .kw-pos-0 { top: -20px; left: -15px; --target-x: -20px; --target-y: -20px; --target-rot: -8deg; }
+        .kw-pos-1 { top: -22px; right: -15px; --target-x: 20px; --target-y: -22px; --target-rot: 7deg; }
+        .kw-pos-2 { top: 46%; left: -50px; --target-x: -25px; --target-y: 0px; --target-rot: -12deg; }
+        .kw-pos-3 { top: 44%; right: -50px; --target-x: 25px; --target-y: 0px; --target-rot: 10deg; }
+        .kw-pos-4 { bottom: -20px; left: 50%; transform: translateX(-50%) scale(0.2); --target-rot: 0deg; }
 
         @media (min-width: 768px) {
-            .polaroid-nest {
-                width: 95px;
-                height: 118px;
-                padding: 6px 6px 22px 6px;
+            .keyword-pill {
+                font-size: 1.05rem;
+                padding: 10px 20px;
             }
-            .polaroid-pos-0 { top: -25px; left: -25px; }
-            .polaroid-pos-1 { top: -30px; right: -25px; }
-            .polaroid-pos-2 { top: 40%; left: -60px; }
-            .polaroid-pos-3 { top: 38%; right: -60px; }
-            .polaroid-pos-4 { bottom: -15px; left: 0px; }
-            .polaroid-pos-5 { bottom: -18px; right: 0px; }
+            .kw-pos-0 { top: -28px; left: -35px; }
+            .kw-pos-1 { top: -30px; right: -35px; }
+            .kw-pos-2 { top: 46%; left: -75px; }
+            .kw-pos-3 { top: 44%; right: -75px; }
+            .kw-pos-4 { bottom: -26px; }
         }
 
-        .bouquet-stage.popped .polaroid-nest {
+        .bouquet-stage.popped .keyword-pill {
             opacity: 1;
             transform: scale(1) rotate(var(--target-rot));
+        }
+        .bouquet-stage.popped .kw-pos-4 {
+            transform: translateX(-50%) scale(1) rotate(var(--target-rot));
         }
 
         /* Glowing text below bouquet */
         .hint-container {
-            margin-top: 36px;
+            margin-top: 38px;
             text-align: center;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             z-index: 15;
         }
 
@@ -299,15 +327,15 @@
             background: rgba(255, 255, 255, 0.08);
             backdrop-filter: blur(14px);
             -webkit-backdrop-filter: blur(14px);
-            border: 1px solid rgba(255, 105, 180, 0.35);
-            padding: 10px 24px;
+            border: 1px solid rgba(255, 105, 180, 0.4);
+            padding: 11px 26px;
             border-radius: 999px;
-            font-size: 1.05rem;
+            font-size: 1.08rem;
             font-weight: 600;
             letter-spacing: 0.5px;
             color: #ffe6eb;
-            text-shadow: 0 0 12px rgba(255, 77, 141, 0.8);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 77, 141, 0.25);
+            text-shadow: 0 0 12px rgba(255, 77, 141, 0.85);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4), 0 0 22px rgba(255, 77, 141, 0.3);
             animation: pulse-glow 2.2s infinite ease-in-out;
             cursor: pointer;
             display: inline-flex;
@@ -326,30 +354,30 @@
         @keyframes pulse-glow {
             0%, 100% {
                 box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4), 0 0 18px rgba(255, 77, 141, 0.3);
-                border-color: rgba(255, 105, 180, 0.35);
+                border-color: rgba(255, 105, 180, 0.4);
                 transform: scale(1);
             }
             50% {
-                box-shadow: 0 8px 35px rgba(0, 0, 0, 0.5), 0 0 30px rgba(255, 77, 141, 0.6);
-                border-color: rgba(255, 105, 180, 0.7);
+                box-shadow: 0 8px 35px rgba(0, 0, 0, 0.5), 0 0 32px rgba(255, 77, 141, 0.65);
+                border-color: rgba(255, 105, 180, 0.8);
                 transform: scale(1.025);
             }
         }
 
         .hint-subtext {
-            font-size: 0.85rem;
-            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.88rem;
+            color: rgba(255, 230, 245, 0.7);
             letter-spacing: 0.3px;
         }
 
-        /* Burst flash transition */
+        /* Burst overlay during transition */
         #burst-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle, rgba(255, 160, 205, 0.95) 0%, rgba(255, 42, 133, 0.8) 50%, rgba(26, 9, 38, 0.95) 100%);
+            background: radial-gradient(circle, rgba(255, 182, 218, 0.95) 0%, rgba(255, 42, 133, 0.85) 50%, rgba(26, 9, 38, 0.98) 100%);
             opacity: 0;
             pointer-events: none;
             z-index: 50;
@@ -360,9 +388,9 @@
             opacity: 1;
         }
 
-        /* ========================
-           PHASE 2: 3D GALAXY SPACE
-           ======================== */
+        /* ==============================================
+           PHASE 2: NGÂN HÀ ĐIỀU ƯỚC 3D (3D WISHING GALAXY)
+           ============================================== */
         #phase-galaxy {
             position: fixed;
             top: 0;
@@ -436,7 +464,31 @@
             filter: drop-shadow(0 2px 5px rgba(0,0,0,0.3));
         }
 
-        /* Little badge for letter button */
+        /* Heartbeat Pulse for Letter Button */
+        .heartbeat-btn {
+            animation: envelope-pulse 1.6s infinite ease-in-out;
+            background: rgba(255, 105, 180, 0.2);
+            border-color: rgba(255, 105, 180, 0.5);
+        }
+
+        @keyframes envelope-pulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35), 0 0 15px rgba(255, 105, 180, 0.3);
+            }
+            15% {
+                transform: scale(1.15);
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45), 0 0 25px rgba(255, 42, 133, 0.7);
+            }
+            30% {
+                transform: scale(1);
+            }
+            45% {
+                transform: scale(1.1);
+                box-shadow: 0 10px 28px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 42, 133, 0.55);
+            }
+        }
+
         .badge-pulse {
             position: absolute;
             top: -2px;
@@ -460,14 +512,14 @@
             bottom: 24px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(18, 8, 30, 0.65);
+            background: rgba(20, 8, 32, 0.68);
             backdrop-filter: blur(14px);
             -webkit-backdrop-filter: blur(14px);
-            border: 1px solid rgba(255, 105, 180, 0.25);
-            padding: 8px 20px;
+            border: 1px solid rgba(255, 105, 180, 0.3);
+            padding: 8px 22px;
             border-radius: 999px;
-            font-size: 0.85rem;
-            color: rgba(255, 230, 240, 0.85);
+            font-size: 0.86rem;
+            color: rgba(255, 235, 245, 0.9);
             pointer-events: none;
             z-index: 30;
             display: flex;
@@ -487,16 +539,16 @@
             flex-shrink: 0;
         }
 
-        /* ========================
-           POPUP: LOVE LETTER MODAL
-           ======================== */
+        /* ==============================================
+           POPUP: BỨC THƯ TÌNH DÀNH CHO ÁNH TUYẾT
+           ============================================== */
         .letter-modal-backdrop {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(8, 3, 14, 0.75);
+            background: rgba(10, 4, 18, 0.78);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             display: flex;
@@ -517,12 +569,12 @@
         .letter-card {
             position: relative;
             width: 100%;
-            max-width: 480px;
-            background: var(--pink-light);
-            border-radius: 24px;
-            padding: 36px 30px 32px 30px;
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), 0 0 30px rgba(255, 105, 180, 0.35);
-            border: 2px solid rgba(255, 182, 193, 0.8);
+            max-width: 490px;
+            background: linear-gradient(155deg, #fff5f8 0%, #fff0f3 50%, #ffe4ec 100%);
+            border-radius: 26px;
+            padding: 38px 32px 34px 32px;
+            box-shadow: 0 25px 65px rgba(0, 0, 0, 0.65), 0 0 35px rgba(255, 105, 180, 0.35);
+            border: 2px solid rgba(255, 182, 193, 0.85);
             transform: scale(0.85) translateY(30px);
             transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
             color: var(--text-wine);
@@ -533,27 +585,26 @@
             transform: scale(1) translateY(0);
         }
 
-        /* Elegant floral stamp header */
         .letter-seal {
             position: absolute;
             top: 18px;
             left: 28px;
             width: 32px;
             height: 32px;
-            opacity: 0.7;
+            opacity: 0.75;
         }
 
         .letter-close-btn {
             position: absolute;
             top: 16px;
             right: 18px;
-            width: 36px;
-            height: 36px;
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
             background: rgba(194, 24, 91, 0.12);
             border: none;
             color: #c2185b;
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             font-weight: bold;
             display: flex;
             align-items: center;
@@ -581,10 +632,10 @@
 
         .letter-content {
             font-size: 1.12rem;
-            line-height: 1.8;
-            min-height: 110px;
+            line-height: 1.85;
+            min-height: 135px;
             font-weight: 500;
-            color: #5a1e33;
+            color: #55192e;
             white-space: pre-wrap;
             position: relative;
         }
@@ -605,7 +656,7 @@
         }
 
         .letter-signature {
-            margin-top: 28px;
+            margin-top: 26px;
             text-align: right;
             font-size: 1.25rem;
             font-weight: 700;
@@ -621,19 +672,18 @@
             transform: translateY(0);
         }
 
-        /* Floating mini hearts in letter */
         .card-bg-heart {
             position: absolute;
             bottom: -20px;
             right: -20px;
-            width: 120px;
-            height: 120px;
-            fill: rgba(255, 182, 193, 0.3);
+            width: 130px;
+            height: 130px;
+            fill: rgba(255, 182, 193, 0.35);
             pointer-events: none;
             z-index: 0;
         }
 
-        /* Audio indicator wave in Glass Button */
+        /* Sound bars inside audio button */
         .audio-bars {
             display: flex;
             align-items: center;
@@ -665,16 +715,16 @@
             50% { transform: scaleY(1); }
         }
 
-        /* ========================
-           PHOTO LIGHTBOX POPUP (3D CLICK)
-           ======================== */
-        .photo-lightbox {
+        /* ==============================================
+           POPUP: THIỆP PHA LÊ CHI TIẾT (KHI CHẠM THIỆP 3D)
+           ============================================== */
+        .crystal-lightbox {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(10, 4, 18, 0.82);
+            background: rgba(12, 4, 20, 0.82);
             backdrop-filter: blur(18px);
             -webkit-backdrop-filter: blur(18px);
             display: flex;
@@ -687,66 +737,91 @@
             padding: 20px;
         }
 
-        .photo-lightbox.open {
+        .crystal-lightbox.open {
             opacity: 1;
             pointer-events: auto;
         }
 
-        .lightbox-card {
-            background: #ffffff;
-            padding: 12px 12px 38px 12px;
-            border-radius: 12px;
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7), 0 0 35px rgba(255, 105, 180, 0.5);
-            max-width: 90vw;
-            max-height: 82vh;
+        .crystal-popup-card {
+            position: relative;
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.22) 0%, rgba(255, 220, 240, 0.12) 100%);
+            border: 2px solid rgba(255, 182, 218, 0.7);
+            border-radius: 24px;
+            padding: 36px 30px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.65), 0 0 35px rgba(255, 105, 180, 0.45);
+            max-width: 440px;
+            width: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
-            position: relative;
+            text-align: center;
             transform: scale(0.85);
             transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            color: #ffffff;
         }
 
-        .photo-lightbox.open .lightbox-card {
+        .crystal-lightbox.open .crystal-popup-card {
             transform: scale(1);
         }
 
-        .lightbox-img {
-            max-width: 100%;
-            max-height: 60vh;
-            border-radius: 8px;
-            object-fit: cover;
+        .crystal-popup-icon {
+            font-size: 3.2rem;
+            margin-bottom: 14px;
+            filter: drop-shadow(0 0 16px rgba(255, 105, 180, 0.8));
         }
 
-        .lightbox-caption {
-            margin-top: 14px;
+        .crystal-popup-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #ffd1dc;
+            text-shadow: 0 0 12px rgba(255, 77, 141, 0.8);
+            margin-bottom: 6px;
+        }
+
+        .crystal-popup-subtitle {
+            font-size: 1rem;
+            color: #ffd166;
+            margin-bottom: 18px;
+            font-weight: 500;
+        }
+
+        .crystal-popup-divider {
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #ff69b4, transparent);
+            margin-bottom: 18px;
+        }
+
+        .crystal-popup-message {
             font-size: 1.15rem;
-            font-weight: 600;
-            color: #7a1f3d;
-            text-align: center;
+            line-height: 1.8;
+            color: #ffffff;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+            font-weight: 400;
         }
 
-        .lightbox-close-btn {
+        .crystal-close-btn {
             position: absolute;
-            top: -16px;
-            right: -16px;
-            width: 38px;
-            height: 38px;
-            background: #ff2a85;
+            top: 14px;
+            right: 16px;
+            width: 36px;
+            height: 36px;
+            background: rgba(255, 255, 255, 0.15);
             color: #ffffff;
-            border: 2px solid #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.3);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-            font-size: 1.2rem;
-            transition: transform 0.2s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            font-size: 1.3rem;
+            transition: all 0.25s ease;
         }
 
-        .lightbox-close-btn:hover {
-            transform: scale(1.15);
+        .crystal-close-btn:hover {
+            background: #ff2a85;
+            transform: scale(1.1);
         }
     </style>
 </head>
@@ -756,6 +831,9 @@
     <div class="cosmic-glow"></div>
     <canvas id="stars-canvas"></canvas>
 
+    <!-- Floating rose petals -->
+    <div class="petals-container" id="petals-container"></div>
+
     <!-- Burst overlay during transition -->
     <div id="burst-overlay"></div>
 
@@ -763,7 +841,7 @@
     <audio id="bg-audio" preload="auto" loop></audio>
 
     <!-- ==============================================
-         PHASE 1: BÓ HOA TƯƠNG TÁC (MÀN HÌNH MỞ ĐẦU)
+         PHASE 1: BÓ HOA MA THUẬT (MÀN HÌNH MỞ ĐẦU)
          ============================================== -->
     <section id="phase-bouquet">
         <div class="bouquet-stage" id="bouquet-stage">
@@ -781,18 +859,17 @@
                     <circle class="hold-ring-bar" id="hold-ring-bar" cx="150" cy="150" r="140"></circle>
                 </svg>
 
-                <!-- Bouquet Main Image -->
+                <!-- Bouquet Main Image Container -->
                 <div class="bouquet-image-container" id="bouquet-circle">
-                    <img id="bouquet-img-el" class="bouquet-img" src="" alt="Bó hoa 20/10">
+                    <img id="bouquet-img-el" class="bouquet-img" src="assets/bouquet.jpg" alt="Bó hoa Ánh Tuyết">
                 </div>
 
-                <!-- 6 Polaroid Photos popped around bouquet -->
-                <div class="polaroid-nest polaroid-pos-0" id="polaroid-0"><img src="" alt="Ảnh kỷ niệm"></div>
-                <div class="polaroid-nest polaroid-pos-1" id="polaroid-1"><img src="" alt="Ảnh kỷ niệm"></div>
-                <div class="polaroid-nest polaroid-pos-2" id="polaroid-2"><img src="" alt="Ảnh kỷ niệm"></div>
-                <div class="polaroid-nest polaroid-pos-3" id="polaroid-3"><img src="" alt="Ảnh kỷ niệm"></div>
-                <div class="polaroid-nest polaroid-pos-4" id="polaroid-4"><img src="" alt="Ảnh kỷ niệm"></div>
-                <div class="polaroid-nest polaroid-pos-5" id="polaroid-5"><img src="" alt="Ảnh kỷ niệm"></div>
+                <!-- 5 Keyword Pills popped around bouquet for Ánh Tuyết -->
+                <div class="keyword-pill kw-pos-0" id="kw-0"><span>🌸</span><span>Xinh đẹp</span></div>
+                <div class="keyword-pill kw-pos-1" id="kw-1"><span>💖</span><span>Đáng yêu</span></div>
+                <div class="keyword-pill kw-pos-2" id="kw-2"><span>☀️</span><span>Vui vẻ</span></div>
+                <div class="keyword-pill kw-pos-3" id="kw-3"><span>🎀</span><span>Hồn nhiên</span></div>
+                <div class="keyword-pill kw-pos-4" id="kw-4"><span>🍀</span><span>May mắn</span></div>
             </div>
         </div>
 
@@ -802,19 +879,19 @@
                 <svg viewBox="0 0 24 24">
                     <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
                 </svg>
-                <span id="hint-text">Chạm vào bó hoa</span>
+                <span id="hint-text">Chạm vào bó hoa nhé</span>
             </div>
-            <div class="hint-subtext" id="hint-subtext">Món quà ngọt ngào dành riêng cho ngày 20/10 🌸</div>
+            <div class="hint-subtext" id="hint-subtext">Món quà đặc biệt dành riêng cho Ánh Tuyết 🌸</div>
         </div>
     </section>
 
     <!-- ==============================================
-         PHASE 2: VŨ TRỤ TÌNH YÊU 3D (3D GALAXY SPACE)
+         PHASE 2: NGÂN HÀ ĐIỀU ƯỚC 3D (3D WISHING GALAXY)
          ============================================== -->
     <section id="phase-galaxy">
         <canvas id="webgl-canvas"></canvas>
 
-        <!-- Top-Right Glassmorphic Controls -->
+        <!-- Top-Right Controls -->
         <div class="galaxy-ui-top">
             <!-- Music Toggle Button -->
             <button class="glass-btn" id="btn-music" title="Bật / Tắt nhạc">
@@ -826,8 +903,8 @@
                 </div>
             </button>
 
-            <!-- Letter Popup Button -->
-            <button class="glass-btn" id="btn-letter" title="Mở bức thư tình">
+            <!-- Letter Popup Button with Heartbeat effect -->
+            <button class="glass-btn heartbeat-btn" id="btn-letter" title="Mở bức thư gửi Ánh Tuyết">
                 <span class="badge-pulse"></span>
                 <svg viewBox="0 0 24 24">
                     <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
@@ -847,16 +924,16 @@
             <svg viewBox="0 0 24 24">
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z"/>
             </svg>
-            <span>Kéo để xoay, cuộn hoặc chụm hai ngón để phóng to</span>
+            <span>Kéo để xoay không gian • Chụm hai ngón để phóng to</span>
         </div>
     </section>
 
     <!-- ==============================================
-         POPUP BỨC THƯ TÌNH (LOVE LETTER POPUP)
+         POPUP BỨC THƯ TÌNH DÀNH RIÊNG CHO ÁNH TUYẾT
          ============================================== -->
     <div class="letter-modal-backdrop" id="letter-modal">
         <div class="letter-card">
-            <!-- Close X Button -->
+            <!-- Close Button -->
             <button class="letter-close-btn" id="btn-close-letter" aria-label="Đóng bức thư">&times;</button>
 
             <!-- Floral Stamp -->
@@ -865,15 +942,15 @@
             </svg>
 
             <!-- Title -->
-            <div class="letter-title" id="letter-title-el">Thân gửi em, ❤️</div>
+            <div class="letter-title" id="letter-title-el">Gửi Ánh Tuyết nhỏ, 🌸</div>
 
             <!-- Typewriter Content -->
             <div class="letter-content" id="letter-content-el"></div>
 
             <!-- Signature -->
-            <div class="letter-signature" id="letter-sig-el">Mãi yêu em,</div>
+            <div class="letter-signature" id="letter-sig-el">Từ một người luôn quan tâm em ✨</div>
 
-            <!-- Background decorative heart -->
+            <!-- Decorative background heart -->
             <svg class="card-bg-heart" viewBox="0 0 24 24">
                 <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
             </svg>
@@ -881,74 +958,78 @@
     </div>
 
     <!-- ==============================================
-         LIGHTBOX POPUP KHI CLICK VÀO ẢNH TRONG 3D
+         POPUP THIỆP PHA LÊ CHI TIẾT KHI CLICK THIỆP 3D
          ============================================== -->
-    <div class="photo-lightbox" id="photo-lightbox">
-        <div class="lightbox-card">
-            <button class="lightbox-close-btn" id="btn-close-lightbox">&times;</button>
-            <img class="lightbox-img" id="lightbox-img-el" src="" alt="Ảnh kỷ niệm">
-            <div class="lightbox-caption" id="lightbox-caption-el">Khoảnh khắc ngọt ngào ❤️</div>
+    <div class="crystal-lightbox" id="crystal-lightbox">
+        <div class="crystal-popup-card">
+            <button class="crystal-close-btn" id="btn-close-crystal">&times;</button>
+            <div class="crystal-popup-icon" id="cp-icon">🌸</div>
+            <div class="crystal-popup-title" id="cp-title">Ánh Tuyết Nhỏ</div>
+            <div class="crystal-popup-subtitle" id="cp-subtitle">Cô bé tháng 10</div>
+            <div class="crystal-popup-divider"></div>
+            <div class="crystal-popup-message" id="cp-message">Nụ cười của em là điều ngọt ngào nhất ✨</div>
         </div>
     </div>
 
     <!-- ==============================================
-         JAVASCRIPT LOGIC & CONFIGURATION
+         JAVASCRIPT LOGIC & CẤU HÌNH (CONFIG)
          ============================================== -->
     <script>
         /* =========================================================================
            V. CẤU HÌNH DỄ DÀNG THAY ĐỔI (CONFIG)
-           Bạn có thể thay đổi đường dẫn ảnh, bài hát và nội dung bức thư tại đây!
+           Dành riêng cho cô bé Ánh Tuyết
            ========================================================================= */
         const CONFIG = {
-            // Đường dẫn ảnh bó hoa chính ở màn hình mở đầu
+            crushName: "Ánh Tuyết",
             bouquetImage: 'assets/bouquet.jpg',
-
-            // Đường dẫn nhạc nền (ưu tiên file local trong assets/, tự động fallback nếu cần)
             musicUrl: 'assets/music.mp3',
 
-            // Danh sách các bức ảnh kỷ niệm (18-20 ảnh chất lượng cao để bay trong không gian 3D)
-            memoryPhotos: [
-                'https://images.unsplash.com/photo-1518895949257-7621c3c786d7?w=600&auto=format&fit=crop&q=80',
-                'https://images.unsplash.com/photo-1526047932273-341f2a7631f9?w=600&auto=format&fit=crop&q=80',
-                'https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=600&auto=format&fit=crop&q=80',
-                'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&auto=format&fit=crop&q=80',
-                'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=600&auto=format&fit=crop&q=80',
-                'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600&auto=format&fit=crop&q=80',
-                'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&auto=format&fit=crop&q=80',
-                'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&auto=format&fit=crop&q=80',
-                'https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=600&auto=format&fit=crop&q=80',
-                'https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=600&auto=format&fit=crop&q=80',
-                'https://images.unsplash.com/photo-1492633423870-43d1cd2775eb?w=600&auto=format&fit=crop&q=80',
-                'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=600&auto=format&fit=crop&q=80',
-                'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&auto=format&fit=crop&q=80',
-                'https://images.unsplash.com/photo-1496449903678-68ddcb189a24?w=600&auto=format&fit=crop&q=80',
-                'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&auto=format&fit=crop&q=80',
-                'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=600&auto=format&fit=crop&q=80',
-                'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=600&auto=format&fit=crop&q=80',
-                'https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=600&auto=format&fit=crop&q=80'
+            // Từ khóa bay lên khi chạm vào bó hoa ở Giai đoạn 1
+            keywords: [
+                { text: "Xinh đẹp", icon: "🌸" },
+                { text: "Đáng yêu", icon: "💖" },
+                { text: "Vui vẻ", icon: "☀️" },
+                { text: "Hồn nhiên", icon: "🎀" },
+                { text: "May mắn", icon: "🍀" }
             ],
 
-            // Các dòng chữ chúc mừng màu hồng phát sáng bay trong không gian 3D
+            // 12-14 Tấm thiệp pha lê (Glassmorphism Cards) bay trong không gian 3D
+            crystalCards: [
+                { icon: "🌸", title: "Ánh Tuyết Nhỏ", subtitle: "Cô bé tháng 10", message: "Nụ cười của em chính là điều ngọt ngào và rạng rỡ nhất ✨" },
+                { icon: "✨", title: "Đáng Yêu", subtitle: "Tỏa sáng lung linh", message: "Mong em luôn hồn nhiên, vui tươi và không muộn phiền 🌷" },
+                { icon: "🌙", title: "Ánh Sao Đêm", subtitle: "Bình yên mỗi tối", message: "Chúc màn đêm luôn ôm ấp em bằng những giấc mơ thật đẹp 💫" },
+                { icon: "🌷", title: "Dịu Dàng", subtitle: "Những điều tốt lành", message: "Mong tất cả những điều dịu dàng nhất của thế giới sẽ tìm đến em 💖" },
+                { icon: "🎀", title: "Hồn Nhiên", subtitle: "Luôn là chính em", message: "Hãy cứ vô tư cười thật nhiều, em lúc nào cũng rất dễ thương 🌸" },
+                { icon: "🍀", title: "May Mắn", subtitle: "Vạn sự hanh thông", message: "Chúc em học tập thật tốt, gặp nhiều điều suôn sẻ và bình an 🍀" },
+                { icon: "☀️", title: "Nụ Cười Tươi", subtitle: "Nắng mai ấm áp", message: "Hôm nay của cô nhóc thế nào? Nhớ lúc nào cũng cười thật tươi nhé ☀️" },
+                { icon: "🧸", title: "Bình Yên", subtitle: "Luôn có anh ở đây", message: "Bất cứ khi nào mệt mỏi, hãy nhớ luôn có người sẵn sàng lắng nghe em 🧸" },
+                { icon: "🧁", title: "Ngọt Ngào", subtitle: "20/10 trọn vẹn", message: "Chúc em một ngày 20/10 ngập tràn niềm vui, hoa và những món quà xinh xắn 🍰" },
+                { icon: "🌟", title: "Tỏa Sáng", subtitle: "Điều đặc biệt", message: "Em là một cô bé vô cùng đặc biệt và đáng quý trong mắt anh 🌟" },
+                { icon: "💌", title: "Món Quà Nhỏ", subtitle: "Dành riêng cho em", message: "Trang web nhỏ này được làm riêng tặng cô bé Ánh Tuyết nhân ngày 20/10 ❤️" },
+                { icon: "🌈", title: "Hạnh Phúc", subtitle: "Mỗi ngày đều vui", message: "Mong mọi bước đường em đi đều ngập tràn hoa hồng và tiếng cười 🌈" }
+            ],
+
+            // Các câu chúc Neon 3D bay trong Ngân hà
             greetings: [
-                "Chúc mừng 20/10 thật hạnh phúc ❤️",
-                "Chúc em luôn xinh đẹp ✨",
-                "Mãi yêu em 💖",
-                "Chúc em luôn vui vẻ và hạnh phúc 🌸",
-                "Mong mọi điều dịu dàng sẽ đến với em 💫",
-                "Chúc em thật nhiều may mắn 🍀",
-                "Chúc em luôn yêu đời 💐"
+                "Chúc cô bé Ánh Tuyết 20/10 ngập tràn niềm vui ✨",
+                "Luôn giữ nụ cười tươi và sự hồn nhiên này nhé",
+                "Mong mọi điều dịu dàng nhất sẽ đến với em",
+                "Chúc em luôn xinh đẹp và rạng rỡ 🌸",
+                "Hôm nay của cô nhóc thế nào? Nhớ luôn vui vẻ nha!",
+                "Chúc em luôn gặp nhiều may mắn và bình an",
+                "Học tập thật tốt và luôn yêu đời nhé"
             ],
 
-            // Nội dung bức thư tình
+            // Bức thư gửi riêng cho Ánh Tuyết
             letter: {
-                title: "Thân gửi em,",
-                content: "Chúc một nửa thế giới của anh luôn xinh đẹp, rạng rỡ, ngập tràn niềm vui và luôn nở nụ cười trên môi trong ngày 20/10 này nhé!",
-                signature: "Mãi yêu em,"
+                title: "Gửi Ánh Tuyết nhỏ,",
+                content: "Nhân ngày 20/10, anh có một món quà nhỏ tự tay chuẩn bị dành tặng cho cô bé. Chúc Ánh Tuyết của anh luôn xinh đẹp, rạng rỡ, học thật giỏi và lúc nào cũng cười tươi thế này nhé. Mong rằng mọi điều tốt đẹp nhất sẽ luôn ở bên em!",
+                signature: "Từ một người luôn quan tâm em ✨"
             }
         };
 
         /* =========================================================================
-           1. BACKGROUND: NGÔI SAO LẤP LÁNH & SAO BĂNG (TWINKLING & SHOOTING STARS)
+           1. BỐI CẢNH & PHÔNG NỀN: SAO LẤP LÁNH, SAO BĂNG & CÁNH HOA BAY
            ========================================================================= */
         const starsCanvas = document.getElementById('stars-canvas');
         const starsCtx = starsCanvas.getContext('2d');
@@ -963,7 +1044,7 @@
 
         function initStars() {
             stars = [];
-            const count = Math.min(160, Math.floor((starsCanvas.width * starsCanvas.height) / 7000));
+            const count = Math.min(180, Math.floor((starsCanvas.width * starsCanvas.height) / 6000));
             for (let i = 0; i < count; i++) {
                 stars.push({
                     x: Math.random() * starsCanvas.width,
@@ -971,16 +1052,16 @@
                     radius: Math.random() * 1.6 + 0.4,
                     alpha: Math.random() * 0.8 + 0.2,
                     speed: Math.random() * 0.02 + 0.008,
-                    color: Math.random() > 0.35 ? '#ffffff' : (Math.random() > 0.5 ? '#ffd2e8' : '#ffe8a3')
+                    color: Math.random() > 0.3 ? '#ffffff' : (Math.random() > 0.5 ? '#ffd2e8' : '#ffe8a3')
                 });
             }
         }
 
         function spawnShootingStar() {
-            const startX = Math.random() * starsCanvas.width * 0.8;
-            const startY = Math.random() * starsCanvas.height * 0.4;
-            const length = Math.random() * 80 + 90;
-            const angle = (Math.PI / 4) + (Math.random() * 0.2 - 0.1); // ~45 deg
+            const startX = Math.random() * starsCanvas.width * 0.85;
+            const startY = Math.random() * starsCanvas.height * 0.35;
+            const length = Math.random() * 90 + 80;
+            const angle = (Math.PI / 4) + (Math.random() * 0.2 - 0.1);
             shootingStars.push({
                 x: startX,
                 y: startY,
@@ -995,7 +1076,7 @@
         function renderStars() {
             starsCtx.clearRect(0, 0, starsCanvas.width, starsCanvas.height);
 
-            // Draw twinkling stars
+            // Twinkling stars
             for (let star of stars) {
                 star.alpha += star.speed;
                 const currentAlpha = Math.abs(Math.sin(star.alpha));
@@ -1008,7 +1089,7 @@
                 starsCtx.fill();
             }
 
-            // Draw shooting stars
+            // Shooting stars
             for (let i = shootingStars.length - 1; i >= 0; i--) {
                 const s = shootingStars[i];
                 const endX = s.x - Math.cos(s.angle) * s.length;
@@ -1016,14 +1097,14 @@
 
                 const grad = starsCtx.createLinearGradient(s.x, s.y, endX, endY);
                 grad.addColorStop(0, `rgba(255, 255, 255, ${s.opacity})`);
-                grad.addColorStop(0.3, `rgba(255, 105, 180, ${s.opacity * 0.8})`);
+                grad.addColorStop(0.35, `rgba(255, 105, 180, ${s.opacity * 0.85})`);
                 grad.addColorStop(1, `rgba(255, 105, 180, 0)`);
 
                 starsCtx.beginPath();
                 starsCtx.moveTo(s.x, s.y);
                 starsCtx.lineTo(endX, endY);
                 starsCtx.strokeStyle = grad;
-                starsCtx.lineWidth = 2.2;
+                starsCtx.lineWidth = 2.4;
                 starsCtx.lineCap = 'round';
                 starsCtx.globalAlpha = 1;
                 starsCtx.shadowBlur = 10;
@@ -1039,8 +1120,7 @@
                 }
             }
 
-            // Random chance to spawn a shooting star
-            if (Math.random() < 0.015 && shootingStars.length < 3) {
+            if (Math.random() < 0.016 && shootingStars.length < 3) {
                 spawnShootingStar();
             }
 
@@ -1052,6 +1132,24 @@
         window.addEventListener('resize', resizeStarsCanvas);
         resizeStarsCanvas();
         renderStars();
+
+        // Floating rose petals generator
+        const petalsContainer = document.getElementById('petals-container');
+        function initFloatingPetals() {
+            const count = 18;
+            for (let i = 0; i < count; i++) {
+                const petal = document.createElement('div');
+                petal.className = 'floating-petal';
+                const size = Math.random() * 12 + 10;
+                petal.style.width = `${size}px`;
+                petal.style.height = `${size * 1.3}px`;
+                petal.style.left = `${Math.random() * 100}%`;
+                petal.style.animationDuration = `${Math.random() * 7 + 8}s`;
+                petal.style.animationDelay = `${Math.random() * 8}s`;
+                petalsContainer.appendChild(petal);
+            }
+        }
+        initFloatingPetals();
 
         /* =========================================================================
            2. AUDIO & NHẠC NỀN (BACKGROUND MUSIC)
@@ -1068,7 +1166,7 @@
                     isAudioPlaying = true;
                     btnMusic.classList.remove('audio-muted');
                 }).catch(err => {
-                    console.log('Audio autoplay prevented or error:', err);
+                    console.log('Audio autoplay prevented or waiting for interaction:', err);
                 });
             }
         }
@@ -1087,7 +1185,7 @@
         });
 
         /* =========================================================================
-           3. GIAI ĐOẠN 1: BÓ HOA TƯƠNG TÁC (CLICK & HOLD)
+           3. GIAI ĐOẠN 1: BÓ HOA MA THUẬT (INTERACTIVE BOUQUET)
            ========================================================================= */
         const phaseBouquet = document.getElementById('phase-bouquet');
         const bouquetStage = document.getElementById('bouquet-stage');
@@ -1099,49 +1197,44 @@
         const burstOverlay = document.getElementById('burst-overlay');
 
         bouquetImgEl.src = CONFIG.bouquetImage;
-        // Fallback for bouquet image
         bouquetImgEl.onerror = () => {
             bouquetImgEl.src = 'https://images.unsplash.com/photo-1526047932273-341f2a7631f9?w=800&auto=format&fit=crop&q=80';
         };
 
-        // Populate the 6 small Polaroid photos
-        for (let i = 0; i < 6; i++) {
-            const polaroidEl = document.getElementById(`polaroid-${i}`);
-            const img = polaroidEl.querySelector('img');
-            img.src = CONFIG.memoryPhotos[i % CONFIG.memoryPhotos.length];
+        // Populate keywords
+        for (let i = 0; i < CONFIG.keywords.length; i++) {
+            const kwEl = document.getElementById(`kw-${i}`);
+            if (kwEl) {
+                kwEl.innerHTML = `<span>${CONFIG.keywords[i].icon}</span><span>${CONFIG.keywords[i].text}</span>`;
+            }
         }
 
         let isPopped = false;
         let isHolding = false;
         let holdStartTime = 0;
         let holdAnimFrame = null;
-        const HOLD_DURATION = 1500; // 1.5 seconds
-        const CIRCLE_CIRCUMFERENCE = 2 * Math.PI * 140; // ~879.64
+        const HOLD_DURATION = 1500;
+        const CIRCLE_CIRCUMFERENCE = 2 * Math.PI * 140;
 
-        // Interaction 1: Click / Tap on bouquet
         function handleBouquetClick() {
             startMusic();
             if (!isPopped) {
                 isPopped = true;
                 bouquetStage.classList.add('popped');
-                hintText.textContent = "Ấn giữ bó hoa";
-                hintSubtext.textContent = "Nhấn và giữ khoảng 1.5 giây để mở cánh cổng vũ trụ 💫";
+                hintText.textContent = "Ấn giữ bó hoa để mở điều bất ngờ";
+                hintSubtext.textContent = "Nhấn và giữ khoảng 1.5 giây để khám phá Ngân hà Điều Ước ✨";
             }
         }
 
         bouquetStage.addEventListener('click', () => {
-            if (!isPopped) {
-                handleBouquetClick();
-            }
+            if (!isPopped) handleBouquetClick();
         });
 
         hintBadge.addEventListener('click', () => {
-            if (!isPopped) {
-                handleBouquetClick();
-            }
+            if (!isPopped) handleBouquetClick();
         });
 
-        // Interaction 2: Press & Hold (Mouse and Touch)
+        // Press & Hold
         function startHold(e) {
             if (!isPopped) return;
             isHolding = true;
@@ -1160,7 +1253,6 @@
                 holdRingBar.style.strokeDashoffset = offset;
 
                 if (progress >= 1) {
-                    // Trigger explosion transition to Phase 2!
                     triggerGalaxyTransition();
                     cancelHold();
                     return;
@@ -1182,14 +1274,12 @@
             holdRingBar.style.strokeDashoffset = CIRCLE_CIRCUMFERENCE;
         }
 
-        // Mouse events
         bouquetStage.addEventListener('mousedown', (e) => {
             if (e.button === 0) startHold(e);
         });
         window.addEventListener('mouseup', cancelHold);
         bouquetStage.addEventListener('mouseleave', cancelHold);
 
-        // Touch events
         bouquetStage.addEventListener('touchstart', (e) => {
             startHold(e);
         }, { passive: true });
@@ -1197,7 +1287,7 @@
         window.addEventListener('touchcancel', cancelHold);
 
         /* =========================================================================
-           TRANSITION: CHUYỂN TỪ GIAI ĐOẠN 1 SANG GIAI ĐOẠN 2
+           TRANSITION: CHUYỂN TỪ BÓ HOA SANG NGÂN HÀ 3D
            ========================================================================= */
         const phaseGalaxy = document.getElementById('phase-galaxy');
 
@@ -1206,7 +1296,6 @@
                 try { navigator.vibrate([40, 60, 80]); } catch(e){}
             }
 
-            // Burst flash
             burstOverlay.classList.add('active');
             phaseBouquet.classList.add('fade-out');
 
@@ -1215,12 +1304,10 @@
                 phaseGalaxy.classList.add('active');
                 burstOverlay.classList.remove('active');
 
-                // Animate camera flying in
                 resetGalaxyCamera();
             }, 600);
         }
 
-        // Return from Phase 2 back to Phase 1
         const btnBack = document.getElementById('btn-back');
         btnBack.addEventListener('click', () => {
             phaseGalaxy.classList.remove('active');
@@ -1228,7 +1315,6 @@
 
             setTimeout(() => {
                 phaseBouquet.style.display = 'flex';
-                // Trigger reflow
                 void phaseBouquet.offsetWidth;
                 phaseBouquet.classList.remove('fade-out');
                 burstOverlay.classList.remove('active');
@@ -1236,11 +1322,11 @@
         });
 
         /* =========================================================================
-           4. GIAI ĐOẠN 2: THREE.JS 3D GALAXY SPACE
+           4. GIAI ĐOẠN 2: THREE.JS 3D WISHING GALAXY
            ========================================================================= */
         const webglCanvas = document.getElementById('webgl-canvas');
         let scene, camera, renderer, controls;
-        let photoMeshes = [];
+        let crystalCardMeshes = [];
         let textSprites = [];
         let heartMeshes = [];
         let starParticles;
@@ -1250,14 +1336,11 @@
             if (isGalaxyInit) return;
             isGalaxyInit = true;
 
-            // Scene
             scene = new THREE.Scene();
 
-            // Camera
             camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 2500);
             camera.position.set(0, 35, 230);
 
-            // Renderer
             renderer = new THREE.WebGLRenderer({
                 canvas: webglCanvas,
                 alpha: true,
@@ -1266,7 +1349,6 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
             renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-            // Controls
             controls = new THREE.OrbitControls(camera, renderer.domElement);
             controls.enableDamping = true;
             controls.dampingFactor = 0.05;
@@ -1281,22 +1363,22 @@
             const ambientLight = new THREE.AmbientLight(0xffffff, 0.95);
             scene.add(ambientLight);
 
-            const pointLight1 = new THREE.PointLight(0xff4d8d, 2.5, 600);
-            pointLight1.position.set(0, 80, 80);
+            const pointLight1 = new THREE.PointLight(0xff4d8d, 2.6, 600);
+            pointLight1.position.set(0, 90, 90);
             scene.add(pointLight1);
 
-            const pointLight2 = new THREE.PointLight(0xffaacc, 1.8, 600);
+            const pointLight2 = new THREE.PointLight(0xffb3d9, 1.8, 600);
             pointLight2.position.set(0, -60, -60);
             scene.add(pointLight2);
 
             // Create 3D Elements
             createStardustParticles();
-            createMemoryPhotoCards();
+            createCrystalGlassCards();
             createGlowingTextSprites();
             createExtrudedHearts();
 
-            // Raycaster for clicking photos
-            setupPhotoRaycaster();
+            // Raycaster for clicking cards
+            setupCardRaycaster();
 
             // Animation Loop
             animateGalaxy();
@@ -1308,7 +1390,7 @@
             }
             camera.position.set(0, 70, 340);
             controls.target.set(0, 0, 0);
-            // Smooth glide in
+
             let startTime = performance.now();
             function glideCam(now) {
                 let p = Math.min((now - startTime) / 1200, 1);
@@ -1322,7 +1404,7 @@
 
         // Stardust & Fireflies in 3D
         function createStardustParticles() {
-            const particleCount = 750;
+            const particleCount = 800;
             const geometry = new THREE.BufferGeometry();
             const positions = new Float32Array(particleCount * 3);
             const colors = new Float32Array(particleCount * 3);
@@ -1352,14 +1434,13 @@
             geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
             geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
-            // Circular glow texture for particle
             const pCanvas = document.createElement('canvas');
             pCanvas.width = 64;
             pCanvas.height = 64;
             const pCtx = pCanvas.getContext('2d');
             const grad = pCtx.createRadialGradient(32, 32, 0, 32, 32, 32);
             grad.addColorStop(0, 'rgba(255, 255, 255, 1)');
-            grad.addColorStop(0.3, 'rgba(255, 120, 180, 0.8)');
+            grad.addColorStop(0.3, 'rgba(255, 120, 180, 0.85)');
             grad.addColorStop(1, 'rgba(255, 120, 180, 0)');
             pCtx.fillStyle = grad;
             pCtx.fillRect(0, 0, 64, 64);
@@ -1379,14 +1460,12 @@
             scene.add(starParticles);
         }
 
-        // Memory Photos (Polaroid Cards in 3D)
-        function createMemoryPhotoCards() {
-            const photos = CONFIG.memoryPhotos;
-            const total = photos.length;
-            const textureLoader = new THREE.TextureLoader();
+        // 12-14 Crystal Glassmorphism Cards in 3D
+        function createCrystalGlassCards() {
+            const cards = CONFIG.crystalCards;
+            const total = cards.length;
 
-            photos.forEach((photoUrl, index) => {
-                // Spherical Fibonacci distribution
+            cards.forEach((card, index) => {
                 const phi = Math.acos(-1 + (2 * index) / total);
                 const theta = Math.sqrt(total * Math.PI) * phi;
                 const radius = 135 + (index % 3) * 14;
@@ -1395,105 +1474,142 @@
                 const y = radius * Math.sin(theta) * Math.sin(phi) * 0.75;
                 const z = radius * Math.cos(phi);
 
-                // Create offscreen Polaroid texture with rounded photo & border
+                // Render Crystal Card Texture on Canvas
                 const cardCanvas = document.createElement('canvas');
                 cardCanvas.width = 400;
-                cardCanvas.height = 490;
+                cardCanvas.height = 510;
                 const ctx = cardCanvas.getContext('2d');
 
-                // Draw initial placeholder card
-                drawPolaroidCard(ctx, null, index);
+                drawCrystalCard(ctx, card);
 
                 const cardTexture = new THREE.CanvasTexture(cardCanvas);
-                const geometry = new THREE.PlaneGeometry(28, 34);
+                const geometry = new THREE.PlaneGeometry(28, 35);
                 const material = new THREE.MeshBasicMaterial({
                     map: cardTexture,
                     side: THREE.DoubleSide,
-                    transparent: true
+                    transparent: true,
+                    opacity: 0.95
                 });
 
                 const mesh = new THREE.Mesh(geometry, material);
                 mesh.position.set(x, y, z);
                 mesh.lookAt(0, 0, 0);
 
-                // Add slight gentle random rotation
                 mesh.rotation.z += (Math.random() - 0.5) * 0.35;
 
-                // Store metadata for bobbing & lightbox
                 mesh.userData = {
                     initialY: y,
                     seed: Math.random() * 10,
                     bobSpeed: 1.2 + Math.random() * 0.8,
-                    photoUrl: photoUrl,
+                    cardData: card,
                     index: index
                 };
 
                 scene.add(mesh);
-                photoMeshes.push(mesh);
-
-                // Asynchronously load real image onto canvas texture
-                const img = new Image();
-                img.crossOrigin = 'anonymous';
-                img.onload = () => {
-                    drawPolaroidCard(ctx, img, index);
-                    cardTexture.needsUpdate = true;
-                };
-                img.onerror = () => {
-                    // Try placeholder fallback
-                    img.src = `https://picsum.photos/seed/${index + 10}/400/400`;
-                };
-                img.src = photoUrl;
+                crystalCardMeshes.push(mesh);
             });
         }
 
-        function drawPolaroidCard(ctx, img, index) {
-            ctx.clearRect(0, 0, 400, 490);
+        function drawCrystalCard(ctx, card) {
+            ctx.clearRect(0, 0, 400, 510);
 
-            // Card shadow & background
-            ctx.fillStyle = '#ffffff';
+            // Card frosted background gradient
+            const bgGrad = ctx.createLinearGradient(0, 0, 400, 510);
+            bgGrad.addColorStop(0, 'rgba(255, 255, 255, 0.22)');
+            bgGrad.addColorStop(0.5, 'rgba(255, 182, 218, 0.18)');
+            bgGrad.addColorStop(1, 'rgba(255, 105, 180, 0.28)');
+            ctx.fillStyle = bgGrad;
             ctx.beginPath();
-            ctx.roundRect(10, 10, 380, 470, 18);
+            ctx.roundRect(14, 14, 372, 482, 24);
             ctx.fill();
 
-            // Inner photo frame
-            const captions = [
-                "20/10 Rực Rỡ 🌸",
-                "Nụ Cười Của Em ✨",
-                "Khoảnh Khắc Ngọt Ngào 💖",
-                "Mãi Yêu Em ❤️",
-                "Hạnh Phúc Đong Đầy 🌷",
-                "Xinh Đẹp & Bình Yên 💫",
-                "Yêu Thương Vô Tận 🌹"
-            ];
+            // Glowing Outer Pink Stroke
+            ctx.strokeStyle = '#ff69b4';
+            ctx.lineWidth = 2.5;
+            ctx.shadowColor = '#ff2a85';
+            ctx.shadowBlur = 16;
+            ctx.stroke();
 
-            if (img) {
-                ctx.save();
-                ctx.beginPath();
-                ctx.roundRect(26, 26, 348, 348, 12);
-                ctx.clip();
-                ctx.drawImage(img, 26, 26, 348, 348);
-                ctx.restore();
-            } else {
-                // Gradient placeholder
-                const pGrad = ctx.createLinearGradient(26, 26, 374, 374);
-                pGrad.addColorStop(0, '#ffd1dc');
-                pGrad.addColorStop(1, '#ff80ab');
-                ctx.fillStyle = pGrad;
-                ctx.beginPath();
-                ctx.roundRect(26, 26, 348, 348, 12);
-                ctx.fill();
-            }
+            // Inner Hairline Stroke
+            ctx.shadowBlur = 0;
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.65)';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.roundRect(18, 18, 364, 474, 20);
+            ctx.stroke();
 
-            // Bottom text / handwritten sticker
-            ctx.fillStyle = '#7a1f3d';
-            ctx.font = '600 24px Mali, cursive, sans-serif';
+            // Card Icon Circle
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.25)';
+            ctx.beginPath();
+            ctx.arc(200, 110, 48, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.strokeStyle = '#ffd1dc';
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+
+            // Emoji / Icon
+            ctx.font = '54px sans-serif';
             ctx.textAlign = 'center';
-            ctx.fillText(captions[index % captions.length], 200, 425);
+            ctx.textBaseline = 'middle';
+            ctx.fillText(card.icon, 200, 114);
 
-            // Tiny heart icon at bottom
-            ctx.fillStyle = '#ff2a85';
-            ctx.font = '20px sans-serif';
-            ctx.fillText('❤️', 200, 455);
+            // Title
+            ctx.font = 'bold 30px Mali, cursive, sans-serif';
+            ctx.fillStyle = '#ffffff';
+            ctx.shadowColor = '#ff2a85';
+            ctx.shadowBlur = 10;
+            ctx.fillText(card.title, 200, 200);
+
+            // Subtitle
+            ctx.shadowBlur = 0;
+            ctx.font = '600 20px Mali, cursive, sans-serif';
+            ctx.fillStyle = '#ffd166';
+            ctx.fillText(card.subtitle, 200, 238);
+
+            // Divider line with sparkling stars
+            const divGrad = ctx.createLinearGradient(80, 265, 320, 265);
+            divGrad.addColorStop(0, 'rgba(255, 255, 255, 0)');
+            divGrad.addColorStop(0.5, 'rgba(255, 182, 218, 0.8)');
+            divGrad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+            ctx.strokeStyle = divGrad;
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.moveTo(80, 265);
+            ctx.lineTo(320, 265);
+            ctx.stroke();
+
+            // Message text (Word wrap)
+            ctx.font = '400 20px Mali, cursive, sans-serif';
+            ctx.fillStyle = '#ffffff';
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.8)';
+            ctx.shadowBlur = 6;
+            wrapText(ctx, card.message, 200, 315, 310, 32);
+
+            // Bottom decorative tag
+            ctx.font = '600 16px Mali, cursive, sans-serif';
+            ctx.fillStyle = '#ffb3d9';
+            ctx.shadowBlur = 0;
+            ctx.fillText('20/10 • Ánh Tuyết 🌸', 200, 455);
+        }
+
+        function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
+            const words = text.split(' ');
+            let line = '';
+            let currentY = y;
+
+            for (let n = 0; n < words.length; n++) {
+                const testLine = line + words[n] + ' ';
+                const metrics = ctx.measureText(testLine);
+                const testWidth = metrics.width;
+                if (testWidth > maxWidth && n > 0) {
+                    ctx.fillText(line.trim(), x, currentY);
+                    line = words[n] + ' ';
+                    currentY += lineHeight;
+                } else {
+                    line = testLine;
+                }
+            }
+            ctx.fillText(line.trim(), x, currentY);
         }
 
         // Glowing Neon 3D Wishes
@@ -1508,13 +1624,11 @@
                 const y = Math.sin(index * 1.5) * 45;
                 const z = Math.sin(angle) * radius;
 
-                // Render high-res text on canvas
                 const tCanvas = document.createElement('canvas');
-                tCanvas.width = 650;
-                tCanvas.height = 160;
+                tCanvas.width = 720;
+                tCanvas.height = 170;
                 const ctx = tCanvas.getContext('2d');
 
-                // Glow effect
                 ctx.font = 'bold 36px Mali, cursive, sans-serif';
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
@@ -1523,12 +1637,12 @@
                 ctx.shadowColor = '#ff2a85';
                 ctx.shadowBlur = 24;
                 ctx.fillStyle = '#ff69b4';
-                ctx.fillText(text, 325, 80);
+                ctx.fillText(text, 360, 85);
 
                 // Inner bright core
                 ctx.shadowBlur = 10;
                 ctx.fillStyle = '#ffffff';
-                ctx.fillText(text, 325, 80);
+                ctx.fillText(text, 360, 85);
 
                 const texture = new THREE.CanvasTexture(tCanvas);
                 const spriteMaterial = new THREE.SpriteMaterial({
@@ -1539,7 +1653,7 @@
 
                 const sprite = new THREE.Sprite(spriteMaterial);
                 sprite.position.set(x, y, z);
-                sprite.scale.set(48, 12, 1);
+                sprite.scale.set(52, 13, 1);
 
                 sprite.userData = {
                     initialY: y,
@@ -1553,7 +1667,6 @@
 
         // Extruded 3D Hearts Floating in Space
         function createExtrudedHearts() {
-            // Heart shape definition
             const heartShape = new THREE.Shape();
             const x = 0, y = 0;
             heartShape.moveTo(x + 5, y + 5);
@@ -1599,7 +1712,7 @@
                 );
 
                 const scale = 0.55 + Math.random() * 0.65;
-                heart.scale.set(scale, -scale, scale); // invert Y for correct heart orientation
+                heart.scale.set(scale, -scale, scale);
 
                 heart.rotation.x = Math.random() * Math.PI;
                 heart.rotation.y = Math.random() * Math.PI;
@@ -1616,8 +1729,8 @@
             }
         }
 
-        // Raycasting for clicking memory photos in 3D
-        function setupPhotoRaycaster() {
+        // Raycasting for clicking Crystal Cards
+        function setupCardRaycaster() {
             const raycaster = new THREE.Raycaster();
             const mouse = new THREE.Vector2();
             let pointerDownPos = { x: 0, y: 0 };
@@ -1628,7 +1741,6 @@
             });
 
             webglCanvas.addEventListener('pointerup', (e) => {
-                // If user dragged more than 6px, it's orbit rotation, not click!
                 const dist = Math.hypot(e.clientX - pointerDownPos.x, e.clientY - pointerDownPos.y);
                 if (dist > 6) return;
 
@@ -1636,53 +1748,49 @@
                 mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
 
                 raycaster.setFromCamera(mouse, camera);
-                const intersects = raycaster.intersectObjects(photoMeshes);
+                const intersects = raycaster.intersectObjects(crystalCardMeshes);
 
                 if (intersects.length > 0) {
                     const clickedMesh = intersects[0].object;
-                    openPhotoLightbox(clickedMesh.userData.photoUrl, clickedMesh.userData.index);
+                    openCrystalLightbox(clickedMesh.userData.cardData);
                 }
             });
         }
 
-        // Lightbox popup for photo
-        const photoLightbox = document.getElementById('photo-lightbox');
-        const lightboxImgEl = document.getElementById('lightbox-img-el');
-        const lightboxCaptionEl = document.getElementById('lightbox-caption-el');
-        const btnCloseLightbox = document.getElementById('btn-close-lightbox');
+        // Lightbox popup for Crystal Card
+        const crystalLightbox = document.getElementById('crystal-lightbox');
+        const cpIcon = document.getElementById('cp-icon');
+        const cpTitle = document.getElementById('cp-title');
+        const cpSubtitle = document.getElementById('cp-subtitle');
+        const cpMessage = document.getElementById('cp-message');
+        const btnCloseCrystal = document.getElementById('btn-close-crystal');
 
-        function openPhotoLightbox(url, index) {
-            lightboxImgEl.src = url;
-            const captions = [
-                "Chúc em ngày 20/10 luôn tràn ngập tiếng cười 🌸",
-                "Ánh mắt dịu dàng sưởi ấm mọi khoảnh khắc ✨",
-                "Mỗi ngày bên em đều là một ngày đặc biệt ❤️",
-                "Mong em luôn rạng rỡ như đóa hồng sớm mai 🌹",
-                "Hạnh phúc ngọt ngào nhất là được thấy em vui 💖",
-                "Cảm ơn em vì đã đến và làm thế giới thêm tươi đẹp 🌷"
-            ];
-            lightboxCaptionEl.textContent = captions[index % captions.length];
-            photoLightbox.classList.add('open');
+        function openCrystalLightbox(data) {
+            cpIcon.textContent = data.icon;
+            cpTitle.textContent = data.title;
+            cpSubtitle.textContent = data.subtitle;
+            cpMessage.textContent = data.message;
+            crystalLightbox.classList.add('open');
         }
 
-        btnCloseLightbox.addEventListener('click', () => {
-            photoLightbox.classList.remove('open');
+        btnCloseCrystal.addEventListener('click', () => {
+            crystalLightbox.classList.remove('open');
         });
-        photoLightbox.addEventListener('click', (e) => {
-            if (e.target === photoLightbox) {
-                photoLightbox.classList.remove('open');
+        crystalLightbox.addEventListener('click', (e) => {
+            if (e.target === crystalLightbox) {
+                crystalLightbox.classList.remove('open');
             }
         });
 
-        // Main 3D Animation Loop
+        // 3D Animation Loop
         function animateGalaxy(timestamp) {
             requestAnimationFrame(animateGalaxy);
             const time = timestamp * 0.001 || 0;
 
             if (controls) controls.update();
 
-            // Bobbing photo cards
-            for (let mesh of photoMeshes) {
+            // Bobbing cards
+            for (let mesh of crystalCardMeshes) {
                 mesh.position.y = mesh.userData.initialY + Math.sin(time * mesh.userData.bobSpeed + mesh.userData.seed) * 4.5;
             }
 
@@ -1718,7 +1826,7 @@
         });
 
         /* =========================================================================
-           5. GIAO DIỆN BỨC THƯ TÌNH (LOVE LETTER POPUP & TYPEWRITER)
+           5. GIAO DIỆN BỨC THƯ TÌNH DÀNH RIÊNG CHO ÁNH TUYẾT
            ========================================================================= */
         const btnLetter = document.getElementById('btn-letter');
         const letterModal = document.getElementById('letter-modal');
@@ -1757,9 +1865,8 @@
                     const currentText = text.substring(0, index + 1);
                     letterContentEl.innerHTML = currentText + '<span class="typewriter-cursor"></span>';
                     index++;
-                    typewriterTimeout = setTimeout(typeChar, 38 + Math.random() * 20);
+                    typewriterTimeout = setTimeout(typeChar, 36 + Math.random() * 20);
                 } else {
-                    // Remove blinking cursor and show signature
                     letterContentEl.innerHTML = text;
                     setTimeout(() => {
                         letterSigEl.classList.add('visible');

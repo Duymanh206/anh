@@ -1,70 +1,66 @@
-# 🌸 Bó hoa ảnh - Chúc mừng Ngày Phụ Nữ Việt Nam 20/10 💖
+# 🌸 Món Quà 20/10 Dành Tặng Ánh Tuyết 💖
 
-> Trang web quà tặng 3D tương tác lãng mạn, tinh tế và ngọt ngào dành tặng người phụ nữ bạn yêu thương nhân ngày 20/10.
-
----
-
-## ✨ Điểm nổi bật & Tính năng chính
-
-### 1. 🌌 Vũ trụ lãng mạn & Sao băng
-- Hiệu ứng bầu trời đêm màu tím than chuyển sắc (`#07040a` đến `#1a0926`) với quầng sáng hồng tím kỳ ảo.
-- Hàng trăm ngôi sao lấp lánh (twinkling stars) cùng sao băng (shooting stars) bay ngang trời ngẫu nhiên.
-- Phông chữ tiếng Việt nghệ thuật Google Font **Mali** mềm mại và ngọt ngào.
-- Tối ưu SEO & Thẻ Open Graph (hiển thị ảnh preview tuyệt đẹp khi chia sẻ link qua Zalo, Messenger, Facebook).
-
-### 2. 🌹 Giai đoạn 1: Bó hoa tương tác
-- Bó hoa hồng phấn bay lơ lửng nhẹ giữa màn hình với quầng sáng lung linh.
-- **Tương tác 1 (Chạm vào bó hoa):** Phát bản nhạc lãng mạn và 6 khung ảnh Polaroid bất ngờ bung nở xung quanh bó hoa với hiệu ứng nảy (spring animation).
-- **Tương tác 2 (Ấn giữ bó hoa 1.5s):** Bó hoa rung nhẹ, tích tụ ánh sáng qua vòng đo năng lượng, rồi bùng nổ chuyển cảnh sang Vũ trụ tình yêu 3D.
-
-### 3. 🪐 Giai đoạn 2: Vũ trụ tình yêu 3D (Three.js WebGL)
-- Không gian 3D tương tác 360 độ: kéo chuột / vuốt ngón tay để xoay, cuộn chuột hoặc chụm 2 ngón để phóng to/thu nhỏ.
-- **18 - 20 khung ảnh kỷ niệm Polaroid** bay lơ lửng, chuyển động nhịp nhàng (bấm vào ảnh bất kỳ để mở xem to).
-- **Các câu chúc 20/10 phát sáng Neon hồng** bay lơ lửng trong không gian:
-  - *"Chúc mừng 20/10 thật hạnh phúc ❤️"*
-  - *"Chúc em luôn xinh đẹp ✨"*
-  - *"Mãi yêu em 💖"*
-  - *"Chúc em luôn vui vẻ và hạnh phúc 🌸"*
-  - *"Mong mọi điều dịu dàng sẽ đến với em 💫"*
-  - *"Chúc em thật nhiều may mắn 🍀"*
-  - *"Chúc em luôn yêu đời 💐"*
-- Hàng chục **trái tim 3D đỏ/hồng** xoay nhịp nhàng và hàng trăm hạt đom đóm / bụi sao lấp lánh.
-
-### 4. 💌 Bức thư tình & Nút điều khiển (Glassmorphism)
-- **Nút Bức thư:** Mở chiếc thiệp tình yêu màu hồng phấn (`#ffe6eb`) với hiệu ứng gõ chữ từng chữ (typewriter effect) chân thật và chữ ký ngọt ngào.
-- **Nút Bật/Tắt nhạc:** Điều khiển âm thanh tiện lợi với thanh sóng âm động.
-- **Nút Đóng (X):** Quay trở lại màn hình Bó hoa ban đầu bất cứ lúc nào.
+> Trang web tương tác 3D lãng mạn, tinh tế với nghệ thuật ánh sáng, hoa hồng ma thuật, thiệp kính mờ Glassmorphism và Ngân hà Điều Ước dành riêng cho cô bé Ánh Tuyết nhân ngày Phụ nữ Việt Nam 20/10.
 
 ---
 
-## 📂 Cấu trúc thư mục
+## ✨ Điểm nổi bật & Trải nghiệm tương tác
 
-```tree
-├── index.html          # Toàn bộ mã nguồn HTML5, CSS3, Three.js 3D & Animation
-├── assets/             # Thư mục chứa tài nguyên ảnh và nhạc
-│   ├── bouquet.jpg     # Ảnh bó hoa chính
-│   ├── music.mp3       # Nhạc nền lãng mạn
-│   └── README.md       # Hướng dẫn chi tiết cách thay đổi ảnh và nhạc
-└── README.md           # Giới thiệu dự án và hướng dẫn sử dụng
-```
+### 1. 🌌 Vũ trụ đêm & Cánh hoa bay (Background)
+- Nền vũ trụ đêm mộng mơ chuyển sắc từ tím than đậm (`#07040a`) sang hồng tím pastel nhẹ ở tâm.
+- Hàng trăm ngôi sao lấp lánh (twinkling stars), đom đóm phát sáng và sao băng (shooting stars) bay ngang qua.
+- Những cánh hoa hồng phát sáng bay lượn nhẹ nhàng trong không gian.
+- Phông chữ nghệ thuật Google Font **Mali** hỗ trợ tiếng Việt mềm mại, đáng yêu.
+
+### 2. 🌹 Giai đoạn 1: Bó hoa ma thuật (Màn hình mở đầu)
+- Bó hoa hồng phấn bay lơ lửng ở giữa màn hình, tỏa hào quang hồng dịu.
+- Dòng chữ phát sáng: **"Chạm vào bó hoa nhé"**.
+- **Tương tác 1 (Chạm vào bó hoa):** Bật nhạc nền piano lãng mạn và làm xuất hiện 5 từ khóa dễ thương bay lên từ bó hoa với hiệu ứng nảy đàn hồi:
+  - 🌸 *Xinh đẹp*
+  - 💖 *Đáng yêu*
+  - ☀️ *Vui vẻ*
+  - 🎀 *Hồn nhiên*
+  - 🍀 *May mắn*
+- Dòng chữ đổi thành: **"Ấn giữ bó hoa để mở điều bất ngờ"**.
+- **Tương tác 2 (Ấn giữ 1.5s):** Bó hoa rung nhẹ tích tụ năng lượng ánh sáng, rồi bung tỏa ngàn hạt sáng rực rỡ để bước vào Giai đoạn 2.
+
+### 3. 🪐 Giai đoạn 2: Ngân hà Điều Ước 3D (Three.js WebGL)
+- Không gian 3D tương tác 360 độ (xoay, cuộn, chụm 2 ngón tay trên điện thoại để phóng to/thu nhỏ).
+- **12 Tấm thiệp pha lê (Glassmorphism Cards)** viền sáng neon hồng, trang trí icon hoa, ngôi sao, mặt trăng với những lời chúc ý nghĩa (chạm vào thiệp để xem phóng to).
+- **Các câu chúc 3D phát sáng Neon hồng** bay lơ lửng dành riêng cho Ánh Tuyết:
+  - *"Chúc cô bé Ánh Tuyết 20/10 ngập tràn niềm vui ✨"*
+  - *"Luôn giữ nụ cười tươi và sự hồn nhiên này nhé"*
+  - *"Mong mọi điều dịu dàng nhất sẽ đến với em"*
+  - *"Chúc em luôn xinh đẹp và rạng rỡ 🌸"*
+  - *"Hôm nay của cô nhóc thế nào? Nhớ luôn vui vẻ nha!"*
+  - *"Chúc em luôn gặp nhiều may mắn và bình an"*
+  - *"Học tập thật tốt và luôn yêu đời nhé"*
+- Hàng chục trái tim 3D và bụi sao lung linh bay xung quanh.
+
+### 4. 💌 Bức thư tình dành riêng cho Ánh Tuyết (UI Overlay)
+- Nút Phong bì thư ở góc phải có **hiệu ứng nhịp đập thu hút (heartbeat)**.
+- **Popup bức thư màu hồng kem ấm áp (`#fff0f3`):**
+  - Tiêu đề: **"Gửi Ánh Tuyết nhỏ, 🌸"**
+  - Nội dung gõ chữ từng chữ một (**typewriter effect**):
+    > *"Nhân ngày 20/10, anh có một món quà nhỏ tự tay chuẩn bị dành tặng cho cô bé. Chúc Ánh Tuyết của anh luôn xinh đẹp, rạng rỡ, học thật giỏi và lúc nào cũng cười tươi thế này nhé. Mong rằng mọi điều tốt đẹp nhất sẽ luôn ở bên em!"*
+  - Chữ ký: **"Từ một người luôn quan tâm em ✨"**
+- Nút Quay lại (X) để quay về màn hình bó hoa ban đầu bất cứ lúc nào.
+- Nút Bật/Tắt nhạc nền với thanh sóng âm chuyển động.
 
 ---
 
-## 🛠️ Tùy biến nội dung (CONFIG)
+## 🛠️ Cấu hình dễ dàng thay đổi (`CONFIG`)
 
-Mở file `index.html`, bạn sẽ thấy đối tượng `CONFIG` ngay ở đầu thẻ `<script>`:
-
+Toàn bộ thông tin được gom gọn tại đối tượng `CONFIG` ở ngay đầu thẻ `<script>` của [index.html](file:///d:/HOÀNG%20DUY%20MẠNH/2/index.html):
 ```javascript
 const CONFIG = {
-    bouquetImage: 'assets/bouquet.jpg',   // Ảnh bó hoa chính
-    musicUrl: 'assets/music.mp3',         // Nhạc nền
-    memoryPhotos: [ ... ],                // Danh sách link ảnh kỷ niệm
-    greetings: [ ... ],                   // Các câu chúc bay trong 3D
-    letter: {                             // Nội dung thiệp tình yêu
-        title: "Thân gửi em,",
-        content: "Chúc một nửa thế giới của anh luôn xinh đẹp, rạng rỡ, ngập tràn niềm vui...",
-        signature: "Mãi yêu em,"
-    }
+    crushName: "Ánh Tuyết",
+    bouquetImage: 'assets/bouquet.jpg',
+    musicUrl: 'assets/music.mp3',
+    keywords: [ ... ],       // Từ khóa bay lên ở Giai đoạn 1
+    crystalCards: [ ... ],   // 12 Tấm thiệp pha lê 3D
+    greetings: [ ... ],      // Câu chúc Neon 3D
+    letter: { ... }          // Bức thư gửi Ánh Tuyết
 };
 ```
 
@@ -72,9 +68,8 @@ const CONFIG = {
 
 ## 🚀 Triển khai (Deploy lên Vercel)
 
-Dự án là trang tĩnh 100% chuẩn HTML/CSS/JS, không cần cài đặt dependencies hay build phức tạp:
-
-1. Đăng nhập vào [Vercel](https://vercel.com).
-2. Chọn **"Add New..."** -> **"Project"**.
-3. Import GitHub repository: `Duymanh206/anh`.
-4. Bấm **"Deploy"** — trang web sẽ online chỉ sau vài giây với tên miền miễn phí!
+Dự án là trang web tĩnh HTML/CSS/Three.js thuần túy:
+1. Đăng nhập [vercel.com](https://vercel.com) với tài khoản GitHub.
+2. Chọn **"Add New..."** ➔ **"Project"**.
+3. Import repository **`Duymanh206/anh`**.
+4. Nhấn **"Deploy"** để nhận link web trực tuyến gửi tặng Ánh Tuyết!
