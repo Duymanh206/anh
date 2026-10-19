@@ -545,18 +545,18 @@
             text-shadow: 0 0 8px rgba(0,0,0,0.6);
         }
 
-        /* Burst overlay during transition */
+        /* Burst overlay during transition with luminous lens flare */
         #burst-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle, rgba(255, 182, 218, 0.95) 0%, rgba(255, 42, 133, 0.88) 50%, rgba(26, 9, 38, 0.98) 100%);
+            background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 1) 0%, rgba(255, 240, 180, 0.95) 15%, rgba(255, 77, 141, 0.9) 45%, rgba(138, 20, 95, 0.95) 75%, #07040a 100%);
             opacity: 0;
             pointer-events: none;
             z-index: 50;
-            transition: opacity 0.6s ease;
+            transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         #burst-overlay.active {
@@ -1600,7 +1600,11 @@
             bouquetEmergenceStart = performance.now();
             isBouquetEmerging = true;
             if (centerBouquetGroup) {
-                centerBouquetGroup.scale.set(0.15, 0.15, 0.15);
+                centerBouquetGroup.scale.set(0.12, 0.12, 0.12);
+            }
+            if (flareSprite) {
+                flareSprite.scale.set(10, 10, 1);
+                flareSprite.material.opacity = 1.0;
             }
         }
 
@@ -1636,7 +1640,10 @@
 
                 // Reset emergence state
                 if (centerBouquetGroup) {
-                    centerBouquetGroup.scale.set(0.15, 0.15, 0.15);
+                    centerBouquetGroup.scale.set(0.12, 0.12, 0.12);
+                }
+                if (flareSprite) {
+                    flareSprite.material.opacity = 0;
                 }
                 isBouquetEmerging = false;
             }, 450);
@@ -1648,7 +1655,8 @@
         const webglCanvas = document.getElementById('webgl-canvas');
         let scene, camera, renderer, controls;
         let centerBouquetGroup;
-        let bouquetMesh, auraMesh, groundRing;
+        let bouquetMesh, auraMesh, groundRing, flareSprite;
+        let topLight, roseLight, goldLight, rimLight;
         let crystalCardMeshes = [];
         let textSprites = [];
         let fallingPetals3D = [];
@@ -1681,25 +1689,25 @@
             controls.minDistance = 60;
             controls.maxDistance = 550;
             controls.autoRotate = true;
-            controls.autoRotateSpeed = 0.3;
+            controls.autoRotateSpeed = 0.28;
 
             // Ambient & Scenic Lights
             const ambientLight = new THREE.AmbientLight(0xffffff, 0.95);
             scene.add(ambientLight);
 
-            const topLight = new THREE.DirectionalLight(0xffe4ec, 1.4);
+            topLight = new THREE.DirectionalLight(0xffe4ec, 1.4);
             topLight.position.set(0, 180, 100);
             scene.add(topLight);
 
-            const roseLight = new THREE.PointLight(0xff2a85, 3.2, 450);
+            roseLight = new THREE.PointLight(0xff2a85, 3.2, 450);
             roseLight.position.set(0, 10, 25);
             scene.add(roseLight);
 
-            const goldLight = new THREE.PointLight(0xffd166, 2.6, 280);
+            goldLight = new THREE.PointLight(0xffd166, 2.6, 280);
             goldLight.position.set(0, -25, 30);
             scene.add(goldLight);
 
-            const rimLight = new THREE.PointLight(0xff69b4, 1.8, 350);
+            rimLight = new THREE.PointLight(0xff69b4, 1.8, 350);
             rimLight.position.set(0, -60, -60);
             scene.add(rimLight);
 
@@ -1821,12 +1829,47 @@
             groundRing.position.y = -52;
             centerBouquetGroup.add(groundRing);
 
-            centerBouquetGroup.scale.set(0.15, 0.15, 0.15);
+            // Optical Flare Sprite for Zoom-In Pulse Entrance
+            const flareCanvas = document.createElement('canvas');
+            flareCanvas.width = 256;
+            flareCanvas.height = 256;
+            const fCtx = flareCanvas.getContext('2d');
+            const fGrad = fCtx.createRadialGradient(128, 128, 0, 128, 128, 128);
+            fGrad.addColorStop(0, 'rgba(255, 255, 255, 1)');
+            fGrad.addColorStop(0.2, 'rgba(255, 240, 180, 0.95)');
+            fGrad.addColorStop(0.5, 'rgba(255, 77, 141, 0.6)');
+            fGrad.addColorStop(1, 'rgba(255, 42, 133, 0)');
+            fCtx.fillStyle = fGrad;
+            fCtx.fillRect(0, 0, 256, 256);
+
+            // Anamorphic 4-point star beam
+            fCtx.fillStyle = 'rgba(255, 255, 255, 0.92)';
+            fCtx.beginPath();
+            fCtx.moveTo(128, 4);
+            fCtx.quadraticCurveTo(128, 128, 252, 128);
+            fCtx.quadraticCurveTo(128, 128, 128, 252);
+            fCtx.quadraticCurveTo(128, 128, 4, 128);
+            fCtx.quadraticCurveTo(128, 128, 128, 4);
+            fCtx.fill();
+
+            const flareTex = new THREE.CanvasTexture(flareCanvas);
+            const flareMat = new THREE.SpriteMaterial({
+                map: flareTex,
+                transparent: true,
+                blending: THREE.AdditiveBlending,
+                depthWrite: false
+            });
+            flareSprite = new THREE.Sprite(flareMat);
+            flareSprite.position.set(0, 0, 12);
+            flareSprite.scale.set(0, 0, 1);
+            centerBouquetGroup.add(flareSprite);
+
+            centerBouquetGroup.scale.set(0.12, 0.12, 0.12);
             scene.add(centerBouquetGroup);
         }
 
         // ==============================================
-        // 2. CÁNH HOA HỒNG 3D RƠI LẢ TẢ NÊN THƠ (FALLING PETALS)
+        // 2. CÁNH HOA HỒNG 3D RƠI LẢ TẢ NÊN THƠ (FALLING PETALS - 60 CÁNH)
         // ==============================================
         function createCurvedRosePetalGeometry(width, length, curl, tipBend) {
             const geom = new THREE.PlaneGeometry(width, length, 12, 12);
@@ -1854,7 +1897,7 @@
             fallingPetals3D = [];
             const petalColors = [0xff2a85, 0xff69b4, 0xff85a2, 0xffa8cc, 0xff4081];
 
-            for (let i = 0; i < 45; i++) {
+            for (let i = 0; i < 60; i++) {
                 const geom = createCurvedRosePetalGeometry(7, 10, 2.2, 1.8);
                 const mat = new THREE.MeshStandardMaterial({
                     color: petalColors[i % petalColors.length],
@@ -1866,8 +1909,8 @@
 
                 const mesh = new THREE.Mesh(geom, mat);
                 const theta = Math.random() * Math.PI * 2;
-                const radius = 22 + Math.random() * 95;
-                const y = -110 + Math.random() * 230;
+                const radius = 22 + Math.random() * 105;
+                const y = -115 + Math.random() * 240;
 
                 mesh.position.set(
                     Math.cos(theta) * radius,
@@ -1885,13 +1928,13 @@
                 mesh.scale.set(scale, scale, scale);
 
                 mesh.userData = {
-                    radius: radius,
+                    baseRadius: radius,
                     theta: theta,
-                    fallSpeed: 0.32 + Math.random() * 0.38,
-                    rotSpeedX: (Math.random() - 0.5) * 0.024,
-                    rotSpeedY: (Math.random() - 0.5) * 0.024,
-                    rotSpeedZ: (Math.random() - 0.5) * 0.024,
-                    driftSpeed: 0.008 + Math.random() * 0.012,
+                    fallSpeed: 0.30 + Math.random() * 0.38,
+                    rotSpeedX: (Math.random() - 0.5) * 0.022,
+                    rotSpeedY: (Math.random() - 0.5) * 0.022,
+                    rotSpeedZ: (Math.random() - 0.5) * 0.022,
+                    driftSpeed: 0.007 + Math.random() * 0.012,
                     seed: Math.random() * 10
                 };
 
@@ -1901,7 +1944,7 @@
         }
 
         // ==============================================
-        // 3. ĐOM ĐÓM PHÁT SÁNG & BỤI SAO LUNG LINH (FIREFLIES & STARDUST)
+        // 3. ĐOM ĐÓM PHÁT SÁNG & BỤI SAO LUNG LINH (90 FIREFLIES & 1200 STARDUST)
         // ==============================================
         function createFireflies() {
             firefliesList = [];
@@ -1926,17 +1969,17 @@
                 depthWrite: false
             });
 
-            for (let i = 0; i < 75; i++) {
+            for (let i = 0; i < 90; i++) {
                 const sprite = new THREE.Sprite(ffMat);
                 const theta = Math.random() * Math.PI * 2;
-                const r = 25 + Math.random() * 120;
-                const y = -65 + Math.random() * 140;
+                const r = 25 + Math.random() * 135;
+                const y = -70 + Math.random() * 150;
 
                 const x = Math.cos(theta) * r;
                 const z = Math.sin(theta) * r;
 
                 sprite.position.set(x, y, z);
-                const baseSize = 4.0 + Math.random() * 4.5;
+                const baseSize = 4.2 + Math.random() * 4.6;
                 sprite.scale.set(baseSize, baseSize, 1);
 
                 sprite.userData = {
@@ -1944,9 +1987,9 @@
                     baseY: y,
                     baseZ: z,
                     baseSize: baseSize,
-                    speedX: 0.6 + Math.random() * 0.8,
-                    speedY: 0.5 + Math.random() * 0.7,
-                    speedZ: 0.6 + Math.random() * 0.8,
+                    speedX: 0.55 + Math.random() * 0.75,
+                    speedY: 0.45 + Math.random() * 0.65,
+                    speedZ: 0.55 + Math.random() * 0.75,
                     pulseSpeed: 1.8 + Math.random() * 2.2,
                     phase: Math.random() * Math.PI * 2
                 };
@@ -1971,7 +2014,7 @@
             ];
 
             for (let i = 0; i < count; i++) {
-                const r = 130 + Math.random() * 390;
+                const r = 135 + Math.random() * 410;
                 const theta = Math.random() * Math.PI * 2;
                 const phi = Math.acos(2 * Math.random() - 1);
 
@@ -2014,46 +2057,48 @@
         }
 
         // ==============================================
-        // 4. CÁC TẤM THIỆP KÍNH MỜ (GLASSMORPHISM CARDS) VÒNG NGOÀI
+        // 4. CÁC TẤM THIỆP KÍNH MỜ (SẮC NÉT, QUỸ ĐẠO THOÁNG ĐÃNG R = 210 - 232)
         // ==============================================
         function createCrystalGlassCards() {
             const cards = CONFIG.crystalCards;
             const total = cards.length;
 
             cards.forEach((card, index) => {
-                // Wide outer orbit around the bouquet (R = 175 - 195)
+                // Wide, spacious outer constellation orbit (R = 210 - 232)
                 const baseAngle = (index / total) * Math.PI * 2;
-                const radius = 175 + (index % 3) * 10;
+                const radius = 210 + (index % 3) * 11;
                 const x = radius * Math.cos(baseAngle);
                 const z = radius * Math.sin(baseAngle);
-                const y = Math.sin(index * 1.5) * 22;
+                const y = Math.sin(index * 1.5) * 26;
 
+                // Higher resolution canvas for ultra-crisp display (500x640)
                 const cardCanvas = document.createElement('canvas');
-                cardCanvas.width = 400;
-                cardCanvas.height = 510;
+                cardCanvas.width = 500;
+                cardCanvas.height = 640;
                 const ctx = cardCanvas.getContext('2d');
 
                 drawCrystalCard(ctx, card);
 
                 const cardTexture = new THREE.CanvasTexture(cardCanvas);
-                const geometry = new THREE.PlaneGeometry(28, 35);
+                const geometry = new THREE.PlaneGeometry(30, 38.4);
                 const material = new THREE.MeshBasicMaterial({
                     map: cardTexture,
                     side: THREE.DoubleSide,
                     transparent: true,
-                    opacity: 0.95
+                    opacity: 0.98,
+                    depthWrite: false
                 });
 
                 const mesh = new THREE.Mesh(geometry, material);
                 mesh.position.set(x, y, z);
-                mesh.lookAt(0, y * 0.2, 0);
+                mesh.lookAt(0, y * 0.15, 0);
 
                 mesh.userData = {
                     initialY: y,
                     baseAngle: baseAngle,
                     radius: radius,
                     seed: Math.random() * 10,
-                    bobSpeed: 1.2 + Math.random() * 0.8,
+                    bobSpeed: 1.1 + Math.random() * 0.7,
                     cardData: card,
                     index: index
                 };
@@ -2064,85 +2109,92 @@
         }
 
         function drawCrystalCard(ctx, card) {
-            ctx.clearRect(0, 0, 400, 510);
+            ctx.clearRect(0, 0, 500, 640);
 
-            // Card frosted background gradient
-            const bgGrad = ctx.createLinearGradient(0, 0, 400, 510);
-            bgGrad.addColorStop(0, 'rgba(255, 255, 255, 0.22)');
-            bgGrad.addColorStop(0.5, 'rgba(255, 182, 218, 0.18)');
-            bgGrad.addColorStop(1, 'rgba(255, 105, 180, 0.28)');
-            ctx.fillStyle = bgGrad;
+            // Layer 1: Semi-opaque dark-glass tint for perfect contrast & readability
+            ctx.fillStyle = 'rgba(16, 6, 26, 0.65)';
             ctx.beginPath();
-            ctx.roundRect(14, 14, 372, 482, 24);
+            ctx.roundRect(14, 14, 472, 612, 28);
             ctx.fill();
 
-            // Glowing Outer Pink Stroke
-            ctx.strokeStyle = '#ff69b4';
-            ctx.lineWidth = 2.5;
+            // Layer 2: Frosted glass gradient
+            const bgGrad = ctx.createLinearGradient(0, 0, 500, 640);
+            bgGrad.addColorStop(0, 'rgba(255, 255, 255, 0.36)');
+            bgGrad.addColorStop(0.35, 'rgba(255, 190, 230, 0.24)');
+            bgGrad.addColorStop(0.75, 'rgba(255, 90, 160, 0.34)');
+            bgGrad.addColorStop(1, 'rgba(255, 140, 200, 0.44)');
+            ctx.fillStyle = bgGrad;
+            ctx.beginPath();
+            ctx.roundRect(14, 14, 472, 612, 28);
+            ctx.fill();
+
+            // Layer 3: Glowing Outer Neon Pink Stroke
+            ctx.strokeStyle = '#ff3385';
+            ctx.lineWidth = 3.5;
             ctx.shadowColor = '#ff2a85';
-            ctx.shadowBlur = 16;
+            ctx.shadowBlur = 22;
             ctx.stroke();
 
-            // Inner Hairline Stroke
+            // Layer 4: Inner Hairline Crisp Stroke
             ctx.shadowBlur = 0;
-            ctx.strokeStyle = 'rgba(255, 255, 255, 0.65)';
-            ctx.lineWidth = 1;
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.92)';
+            ctx.lineWidth = 1.8;
             ctx.beginPath();
-            ctx.roundRect(18, 18, 364, 474, 20);
+            ctx.roundRect(18, 18, 464, 604, 24);
             ctx.stroke();
 
             // Card Icon Circle
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.25)';
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.32)';
             ctx.beginPath();
-            ctx.arc(200, 110, 48, 0, Math.PI * 2);
+            ctx.arc(250, 130, 56, 0, Math.PI * 2);
             ctx.fill();
-            ctx.strokeStyle = '#ffd1dc';
-            ctx.lineWidth = 1.5;
+            ctx.strokeStyle = '#ffe4ec';
+            ctx.lineWidth = 2;
             ctx.stroke();
 
             // Emoji / Icon
-            ctx.font = '54px sans-serif';
+            ctx.font = '64px sans-serif';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-            ctx.fillText(card.icon, 200, 114);
+            ctx.fillText(card.icon, 250, 134);
 
             // Title
-            ctx.font = 'bold 30px Mali, cursive, sans-serif';
+            ctx.font = 'bold 36px Mali, cursive, sans-serif';
             ctx.fillStyle = '#ffffff';
             ctx.shadowColor = '#ff2a85';
-            ctx.shadowBlur = 10;
-            ctx.fillText(card.title, 200, 200);
+            ctx.shadowBlur = 14;
+            ctx.fillText(card.title, 250, 235);
 
             // Subtitle
-            ctx.shadowBlur = 0;
-            ctx.font = '600 20px Mali, cursive, sans-serif';
+            ctx.shadowBlur = 4;
+            ctx.font = '700 24px Mali, cursive, sans-serif';
             ctx.fillStyle = '#ffd166';
-            ctx.fillText(card.subtitle, 200, 238);
+            ctx.fillText(card.subtitle, 250, 278);
 
             // Divider line with sparkling stars
-            const divGrad = ctx.createLinearGradient(80, 265, 320, 265);
+            const divGrad = ctx.createLinearGradient(90, 315, 410, 315);
             divGrad.addColorStop(0, 'rgba(255, 255, 255, 0)');
-            divGrad.addColorStop(0.5, 'rgba(255, 182, 218, 0.8)');
+            divGrad.addColorStop(0.5, 'rgba(255, 200, 235, 0.95)');
             divGrad.addColorStop(1, 'rgba(255, 255, 255, 0)');
             ctx.strokeStyle = divGrad;
-            ctx.lineWidth = 1.5;
+            ctx.lineWidth = 2;
             ctx.beginPath();
-            ctx.moveTo(80, 265);
-            ctx.lineTo(320, 265);
+            ctx.moveTo(90, 315);
+            ctx.lineTo(410, 315);
             ctx.stroke();
 
-            // Message text (Word wrap)
-            ctx.font = '400 20px Mali, cursive, sans-serif';
+            // Message text (Crisp, high-contrast, easily readable)
+            ctx.font = '600 24px Mali, cursive, sans-serif';
             ctx.fillStyle = '#ffffff';
-            ctx.shadowColor = 'rgba(0, 0, 0, 0.8)';
-            ctx.shadowBlur = 6;
-            wrapText(ctx, card.message, 200, 315, 310, 32);
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.95)';
+            ctx.shadowBlur = 10;
+            wrapText(ctx, card.message, 250, 370, 410, 38);
 
             // Bottom decorative tag
-            ctx.font = '600 16px Mali, cursive, sans-serif';
-            ctx.fillStyle = '#ffb3d9';
+            ctx.font = '700 20px Mali, cursive, sans-serif';
+            ctx.fillStyle = '#ff99cc';
             ctx.shadowBlur = 0;
-            ctx.fillText('20/10 • Ánh Tuyết 🌸', 200, 455);
+            ctx.fillText('20/10 • Ánh Tuyết 🌸', 250, 580);
         }
 
         function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
@@ -2166,50 +2218,52 @@
         }
 
         // ==============================================
-        // 5. CÂU CHÚC 3D PHÁT SÁNG (NEON TEXT) QUỸ ĐẠO TRUNG GIAN
+        // 5. CÂU CHÚC 3D PHÁT SÁNG (NEON TEXT - QUỸ ĐẠO R = 155 - 171)
         // ==============================================
         function createGlowingTextSprites() {
             const greetings = CONFIG.greetings;
             const total = greetings.length;
+            const heights = [44, -38, 40, -42, 45, -36];
 
             greetings.forEach((text, index) => {
-                // Intermediate orbit (R = 125 - 140)
-                const baseAngle = (index / total) * Math.PI * 2 + 0.18;
-                const radius = 126 + (index % 2) * 14;
+                // Intermediate orbit (R = 155 - 171) - well clear of central bouquet!
+                const baseAngle = (index / total) * Math.PI * 2 + 0.15;
+                const radius = 156 + (index % 2) * 15;
                 const x = Math.cos(baseAngle) * radius;
                 const z = Math.sin(baseAngle) * radius;
-                const y = (index % 2 === 0 ? 32 : -26) + Math.sin(index * 2) * 7;
+                const y = heights[index % heights.length];
 
                 const tCanvas = document.createElement('canvas');
-                tCanvas.width = 720;
-                tCanvas.height = 170;
+                tCanvas.width = 880;
+                tCanvas.height = 180;
                 const ctx = tCanvas.getContext('2d');
 
-                ctx.font = 'bold 36px Mali, cursive, sans-serif';
+                ctx.font = 'bold 40px Mali, cursive, sans-serif';
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
 
                 // Outer neon glow
                 ctx.shadowColor = '#ff2a85';
-                ctx.shadowBlur = 24;
-                ctx.fillStyle = '#ff69b4';
-                ctx.fillText(text, 360, 85);
+                ctx.shadowBlur = 32;
+                ctx.fillStyle = '#ff4d94';
+                ctx.fillText(text, 440, 90);
 
-                // Inner bright core
-                ctx.shadowBlur = 10;
+                // Inner bright white core
+                ctx.shadowBlur = 14;
                 ctx.fillStyle = '#ffffff';
-                ctx.fillText(text, 360, 85);
+                ctx.fillText(text, 440, 90);
 
                 const texture = new THREE.CanvasTexture(tCanvas);
                 const spriteMaterial = new THREE.SpriteMaterial({
                     map: texture,
                     transparent: true,
-                    blending: THREE.AdditiveBlending
+                    blending: THREE.AdditiveBlending,
+                    depthWrite: false
                 });
 
                 const sprite = new THREE.Sprite(spriteMaterial);
                 sprite.position.set(x, y, z);
-                sprite.scale.set(52, 13, 1);
+                sprite.scale.set(64, 14, 1);
 
                 sprite.userData = {
                     initialY: y,
@@ -2284,21 +2338,58 @@
 
             if (controls) controls.update();
 
-            // 1. Animate Grand Bouquet Centerpiece
+            // 1. Animate Grand Bouquet Centerpiece with Zoom-In Pulse & Flare
             if (centerBouquetGroup) {
                 // Floating gentle bobbing
-                centerBouquetGroup.position.y = Math.sin(time * 1.5) * 5.5;
-                centerBouquetGroup.rotation.z = Math.sin(time * 1.0) * 0.025;
+                centerBouquetGroup.position.y = Math.sin(time * 1.6) * 5.5;
+                centerBouquetGroup.rotation.z = Math.sin(time * 1.1) * 0.025;
 
-                // Smooth emergence scale
+                // Zoom-In Pulse & Optical Flare Emergence Animation
                 if (isBouquetEmerging) {
                     const elapsed = now - bouquetEmergenceStart;
-                    const duration = 2000;
+                    const duration = 2200;
                     const p = Math.min(elapsed / duration, 1.0);
-                    const ease = 1 - Math.pow(1 - p, 3);
-                    const curScale = 0.15 + (0.85 * ease);
+
+                    // Zoom-In Pulse: expands to 1.18x peak at 55% then settles softly to 1.0
+                    let curScale;
+                    if (p < 0.55) {
+                        let subP = p / 0.55;
+                        let easeOut = 1 - Math.pow(1 - subP, 3);
+                        curScale = 0.12 + (1.18 - 0.12) * easeOut;
+                    } else {
+                        let subP = (p - 0.55) / 0.45;
+                        let easeSettle = Math.sin(subP * Math.PI * 0.5);
+                        curScale = 1.18 - 0.18 * easeSettle;
+                    }
                     centerBouquetGroup.scale.set(curScale, curScale, curScale);
-                    if (p >= 1.0) isBouquetEmerging = false;
+
+                    // Optical Flare Light Flash
+                    if (flareSprite) {
+                        if (p < 0.35) {
+                            let fP = p / 0.35;
+                            let fScale = 220 * Math.sin(fP * Math.PI * 0.5);
+                            flareSprite.scale.set(fScale, fScale, 1);
+                            flareSprite.material.opacity = 1.0;
+                        } else {
+                            let fFade = (p - 0.35) / 0.65;
+                            let fScale = 220 + 60 * fFade;
+                            flareSprite.scale.set(fScale, fScale, 1);
+                            flareSprite.material.opacity = Math.max(0, 1.0 - Math.pow(fFade, 1.5));
+                        }
+                    }
+
+                    // Dynamic light flare
+                    if (roseLight) {
+                        roseLight.intensity = 3.2 + (2.4 * Math.sin(p * Math.PI));
+                    }
+                    if (goldLight) {
+                        goldLight.intensity = 2.6 + (2.0 * Math.sin(p * Math.PI));
+                    }
+
+                    if (p >= 1.0) {
+                        isBouquetEmerging = false;
+                        if (flareSprite) flareSprite.material.opacity = 0;
+                    }
                 }
 
                 // Billboard orientation: bouquet & aura always face viewer gracefully
@@ -2308,7 +2399,7 @@
                 if (auraMesh && camera) {
                     auraMesh.quaternion.copy(camera.quaternion);
                     // Breathing pulse of the aura
-                    const auraPulse = 1.0 + Math.sin(time * 2.2) * 0.08;
+                    const auraPulse = 1.0 + Math.sin(time * 2.2) * 0.1;
                     auraMesh.scale.set(auraPulse, auraPulse, 1);
                 }
 
@@ -2318,49 +2409,53 @@
                 }
             }
 
-            // 2. Animate Falling 3D Rose Petals
+            // 2. Animate Falling 3D Rose Petals (60 petals fluttering gracefully)
             for (let petal of fallingPetals3D) {
-                petal.position.y -= petal.userData.fallSpeed;
-                petal.rotation.x += petal.userData.rotSpeedX;
-                petal.rotation.y += petal.userData.rotSpeedY;
-                petal.rotation.z += petal.userData.rotSpeedZ;
+                const u = petal.userData;
+                u.theta += u.driftSpeed;
+                const currentR = u.baseRadius + Math.sin(time * 1.5 + u.seed) * 14;
+                petal.position.x = Math.cos(u.theta) * currentR;
+                petal.position.z = Math.sin(u.theta) * currentR;
+                petal.position.y -= (u.fallSpeed + Math.sin(time * 2.2 + u.seed) * 0.08);
 
-                petal.userData.theta += petal.userData.driftSpeed;
-                petal.position.x = Math.cos(petal.userData.theta) * petal.userData.radius;
-                petal.position.z = Math.sin(petal.userData.theta) * petal.userData.radius;
+                petal.rotation.x += u.rotSpeedX + Math.sin(time * 1.5 + u.seed) * 0.008;
+                petal.rotation.y += u.rotSpeedY;
+                petal.rotation.z += u.rotSpeedZ + Math.cos(time * 1.8 + u.seed) * 0.008;
 
                 // Loop reset from bottom to top
-                if (petal.position.y < -120) {
-                    petal.position.y = 120;
-                    petal.userData.radius = 22 + Math.random() * 95;
+                if (petal.position.y < -125) {
+                    petal.position.y = 125;
+                    u.baseRadius = 22 + Math.random() * 105;
                 }
             }
 
-            // 3. Animate Fireflies (Đom đóm bay lơ lửng & chớp sáng)
+            // 3. Animate Fireflies (90 fireflies in organic 3D swirl & twinkle)
             for (let ff of firefliesList) {
                 const u = ff.userData;
-                ff.position.x = u.baseX + Math.sin(time * u.speedX + u.phase) * 15;
-                ff.position.y = u.baseY + Math.cos(time * u.speedY + u.phase) * 12;
-                ff.position.z = u.baseZ + Math.sin(time * u.speedZ + u.phase) * 15;
+                ff.position.x = u.baseX + Math.sin(time * u.speedX + u.phase) * 22 + Math.cos(time * 0.45 + u.phase) * 8;
+                ff.position.y = u.baseY + Math.cos(time * u.speedY + u.phase) * 18 + Math.sin(time * 0.75 + u.phase) * 6;
+                ff.position.z = u.baseZ + Math.sin(time * u.speedZ + u.phase) * 22 + Math.sin(time * 0.35 + u.phase) * 8;
 
-                const pulse = u.baseSize * (0.65 + 0.45 * Math.sin(time * u.pulseSpeed + u.phase));
+                const sinPulse = Math.sin(time * u.pulseSpeed + u.phase);
+                const quickTwinkle = 0.8 + 0.2 * Math.sin(time * 7 + u.phase);
+                const pulse = u.baseSize * (0.45 + 0.55 * sinPulse * sinPulse * quickTwinkle);
                 ff.scale.set(pulse, pulse, 1);
             }
 
-            // 4. Animate Crystal Cards Orbiting around Bouquet
+            // 4. Animate Crystal Cards Orbiting at Wide Radius
             for (let mesh of crystalCardMeshes) {
                 const u = mesh.userData;
-                const cardAngle = u.baseAngle + time * 0.035;
+                const cardAngle = u.baseAngle + time * 0.032;
                 mesh.position.x = Math.cos(cardAngle) * u.radius;
                 mesh.position.z = Math.sin(cardAngle) * u.radius;
                 mesh.position.y = u.initialY + Math.sin(time * u.bobSpeed + u.seed) * 4.8;
-                mesh.lookAt(0, mesh.position.y * 0.2, 0);
+                mesh.lookAt(0, mesh.position.y * 0.15, 0);
             }
 
             // 5. Animate Neon Wishes Orbiting around Bouquet
             for (let sprite of textSprites) {
                 const u = sprite.userData;
-                const wishAngle = u.baseAngle + time * 0.048;
+                const wishAngle = u.baseAngle + time * 0.045;
                 sprite.position.x = Math.cos(wishAngle) * u.radius;
                 sprite.position.z = Math.sin(wishAngle) * u.radius;
                 sprite.position.y = u.initialY + Math.sin(time * 1.5 + u.seed) * 4.2;
@@ -2368,8 +2463,8 @@
 
             // 6. Rotating Stardust Galaxy
             if (starParticles) {
-                starParticles.rotation.y = time * 0.025;
-                starParticles.rotation.x = Math.sin(time * 0.015) * 0.04;
+                starParticles.rotation.y = time * 0.022;
+                starParticles.rotation.x = Math.sin(time * 0.015) * 0.035;
             }
 
             if (renderer && scene && camera) {
