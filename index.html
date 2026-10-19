@@ -66,7 +66,7 @@
             width: 100vmax;
             height: 100vmax;
             transform: translate(-50%, -50%);
-            background: radial-gradient(circle, rgba(255, 105, 180, 0.18) 0%, rgba(138, 35, 115, 0.15) 35%, rgba(20, 5, 30, 0.6) 70%, transparent 95%);
+            background: radial-gradient(circle, rgba(255, 105, 180, 0.22) 0%, rgba(138, 35, 115, 0.16) 38%, rgba(20, 5, 30, 0.65) 70%, transparent 95%);
             pointer-events: none;
             z-index: 1;
         }
@@ -134,31 +134,35 @@
             align-items: center;
             justify-content: center;
             z-index: 10;
+            perspective: 1200px;
             transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         #phase-bouquet.fade-out {
             opacity: 0;
-            transform: scale(1.12);
+            transform: scale(1.15);
             pointer-events: none;
         }
 
+        /* 3D Parallax Root Stage */
         .bouquet-stage {
             position: relative;
-            width: 320px;
-            height: 320px;
-            max-width: 85vw;
-            max-height: 85vw;
+            width: 360px;
+            height: 360px;
+            max-width: 88vw;
+            max-height: 88vw;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
+            transform-style: preserve-3d;
+            will-change: transform;
         }
 
         @media (min-width: 768px) {
             .bouquet-stage {
-                width: 390px;
-                height: 390px;
+                width: 440px;
+                height: 440px;
             }
         }
 
@@ -170,7 +174,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            animation: floating 4.2s ease-in-out infinite;
+            transform-style: preserve-3d;
+            animation: floating 4.5s ease-in-out infinite;
             will-change: transform;
         }
 
@@ -179,25 +184,162 @@
                 transform: translateY(0px) rotate(0deg);
             }
             50% {
-                transform: translateY(-14px) rotate(1deg);
+                transform: translateY(-14px) rotate(0.8deg);
             }
         }
 
-        /* Bouquet Image Container */
-        .bouquet-image-container {
-            position: relative;
-            width: 275px;
-            height: 275px;
-            max-width: 74vw;
-            max-height: 74vw;
-            border-radius: 50%;
-            padding: 8px;
-            background: radial-gradient(circle, rgba(255, 105, 180, 0.38) 0%, rgba(255, 77, 141, 0.12) 60%, transparent 80%);
-            box-shadow: 0 0 55px rgba(255, 77, 141, 0.45), inset 0 0 30px rgba(255, 255, 255, 0.25);
+        /* ==============================================
+           AURA & GLOW: HÀO QUANG ĐA LỚP PHÍA SAU BÓ HOA
+           ============================================== */
+        .bouquet-aura-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) translateZ(-40px);
+            width: 100%;
+            height: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: transform 0.25s ease, box-shadow 0.3s ease;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Layer 1: Radiant breathing bloom */
+        .aura-bloom {
+            position: absolute;
+            width: 380px;
+            height: 380px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 42, 133, 0.55) 0%, rgba(255, 105, 180, 0.38) 38%, rgba(162, 34, 136, 0.2) 65%, transparent 80%);
+            filter: blur(25px);
+            animation: aura-breath 3.4s ease-in-out infinite alternate;
+            will-change: transform, opacity;
+        }
+
+        @media (min-width: 768px) {
+            .aura-bloom {
+                width: 470px;
+                height: 470px;
+                filter: blur(32px);
+            }
+        }
+
+        @keyframes aura-breath {
+            0% {
+                transform: scale(0.92);
+                opacity: 0.65;
+            }
+            100% {
+                transform: scale(1.18);
+                opacity: 0.98;
+            }
+        }
+
+        /* Layer 2: Rotating sunrays / magical halo */
+        .aura-sunrays {
+            position: absolute;
+            width: 440px;
+            height: 440px;
+            border-radius: 50%;
+            background: conic-gradient(
+                from 0deg,
+                rgba(255, 105, 180, 0.28),
+                transparent 25deg,
+                rgba(255, 192, 224, 0.35) 50deg,
+                transparent 80deg,
+                rgba(255, 42, 133, 0.32) 115deg,
+                transparent 145deg,
+                rgba(255, 209, 102, 0.32) 180deg,
+                transparent 210deg,
+                rgba(255, 105, 180, 0.28) 245deg,
+                transparent 275deg,
+                rgba(255, 42, 133, 0.35) 310deg,
+                transparent 340deg,
+                rgba(255, 105, 180, 0.28) 360deg
+            );
+            filter: blur(14px);
+            animation: sunray-spin 26s linear infinite;
+            mix-blend-mode: screen;
+            opacity: 0.8;
+            will-change: transform;
+        }
+
+        @media (min-width: 768px) {
+            .aura-sunrays {
+                width: 530px;
+                height: 530px;
+            }
+        }
+
+        @keyframes sunray-spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Layer 3: Celestial starlight orbital ring */
+        .aura-orbit-ring {
+            position: absolute;
+            width: 340px;
+            height: 340px;
+            border: 1.5px dashed rgba(255, 182, 218, 0.55);
+            border-radius: 50%;
+            box-shadow: 0 0 30px rgba(255, 105, 180, 0.45), inset 0 0 25px rgba(255, 105, 180, 0.25);
+            animation: ring-counter-spin 34s linear infinite;
+            opacity: 0.75;
+        }
+
+        @media (min-width: 768px) {
+            .aura-orbit-ring {
+                width: 410px;
+                height: 410px;
+            }
+        }
+
+        @keyframes ring-counter-spin {
+            from { transform: rotate(360deg); }
+            to { transform: rotate(0deg); }
+        }
+
+        /* Layer 4: Interactive Halo Canvas (Orbiting Sparkles & Fireflies) */
+        #bouquet-sparkles-canvas {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) translateZ(10px);
+            width: 480px;
+            height: 480px;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        /* ==============================================
+           BOUQUET MAIN IMAGE CONTAINER
+           ============================================== */
+        .bouquet-image-container {
+            position: relative;
+            width: 285px;
+            height: 285px;
+            max-width: 76vw;
+            max-height: 76vw;
+            border-radius: 50%;
+            padding: 9px;
+            background: radial-gradient(circle, rgba(255, 105, 180, 0.45) 0%, rgba(255, 77, 141, 0.18) 60%, transparent 80%);
+            box-shadow: 0 0 65px rgba(255, 77, 141, 0.55), inset 0 0 35px rgba(255, 255, 255, 0.35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform-style: preserve-3d;
+            transform: translateZ(30px);
+            transition: box-shadow 0.3s ease;
+            z-index: 4;
+        }
+
+        @media (min-width: 768px) {
+            .bouquet-image-container {
+                width: 340px;
+                height: 340px;
+            }
         }
 
         .bouquet-img {
@@ -205,38 +347,40 @@
             height: 100%;
             object-fit: cover;
             border-radius: 50%;
-            filter: drop-shadow(0 14px 32px rgba(0, 0, 0, 0.6));
+            filter: drop-shadow(0 16px 36px rgba(0, 0, 0, 0.65));
             pointer-events: none;
+            transition: transform 0.3s ease;
         }
 
         /* SVG Hold Progress Ring */
         .hold-ring-svg {
             position: absolute;
-            top: -15px;
-            left: -15px;
-            width: calc(100% + 30px);
-            height: calc(100% + 30px);
+            top: -16px;
+            left: -16px;
+            width: calc(100% + 32px);
+            height: calc(100% + 32px);
             pointer-events: none;
-            transform: rotate(-90deg);
+            transform: rotate(-90deg) translateZ(40px);
             opacity: 0;
             transition: opacity 0.3s ease;
+            z-index: 6;
         }
 
         .hold-ring-bg {
             fill: none;
-            stroke: rgba(255, 255, 255, 0.14);
-            stroke-width: 4;
+            stroke: rgba(255, 255, 255, 0.16);
+            stroke-width: 4.5;
         }
 
         .hold-ring-bar {
             fill: none;
             stroke: url(#ring-gradient);
-            stroke-width: 5;
+            stroke-width: 5.5;
             stroke-linecap: round;
             stroke-dasharray: 880;
             stroke-dashoffset: 880;
             transition: stroke-dashoffset 0.05s linear;
-            filter: drop-shadow(0 0 12px #ff2a85);
+            filter: drop-shadow(0 0 14px #ff2a85);
         }
 
         /* Holding state */
@@ -249,13 +393,13 @@
         }
 
         .bouquet-stage.holding .bouquet-image-container {
-            box-shadow: 0 0 75px rgba(255, 42, 133, 0.85), inset 0 0 40px rgba(255, 255, 255, 0.6);
+            box-shadow: 0 0 90px rgba(255, 42, 133, 0.95), inset 0 0 45px rgba(255, 255, 255, 0.7);
         }
 
         @keyframes bouquet-shake {
-            0% { transform: translate(1.5px, 1.5px) rotate(0.6deg) scale(0.98); }
-            50% { transform: translate(-1.5px, -1px) rotate(-0.6deg) scale(0.98); }
-            100% { transform: translate(1px, -1.5px) rotate(0.4deg) scale(0.98); }
+            0% { transform: translate(2px, 2px) rotate(0.8deg) scale(0.98); }
+            50% { transform: translate(-2px, -1.5px) rotate(-0.8deg) scale(0.98); }
+            100% { transform: translate(1.5px, -2px) rotate(0.6deg) scale(0.98); }
         }
 
         /* ==============================================
@@ -263,26 +407,26 @@
            ============================================== */
         .keyword-pill {
             position: absolute;
-            padding: 8px 16px;
+            padding: 9px 18px;
             border-radius: 999px;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1.5px solid rgba(255, 182, 218, 0.6);
+            background: rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1.5px solid rgba(255, 182, 218, 0.75);
             color: #fff0f5;
-            font-size: 0.95rem;
+            font-size: 0.98rem;
             font-weight: 600;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4), 0 0 18px rgba(255, 77, 141, 0.4);
-            text-shadow: 0 0 8px rgba(255, 105, 180, 0.8);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45), 0 0 20px rgba(255, 77, 141, 0.5);
+            text-shadow: 0 0 10px rgba(255, 105, 180, 0.9);
             opacity: 0;
-            transform: scale(0.2) translate(0, 0);
+            transform: scale(0.2) translate(0, 0) translateZ(50px);
             transition: all 0.75s cubic-bezier(0.34, 1.56, 0.64, 1);
             pointer-events: none;
-            z-index: 6;
+            z-index: 8;
             white-space: nowrap;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 7px;
         }
 
         /* 5 positions around the bouquet */
@@ -290,12 +434,12 @@
         .kw-pos-1 { top: -22px; right: -15px; --target-x: 20px; --target-y: -22px; --target-rot: 7deg; }
         .kw-pos-2 { top: 46%; left: -50px; --target-x: -25px; --target-y: 0px; --target-rot: -12deg; }
         .kw-pos-3 { top: 44%; right: -50px; --target-x: 25px; --target-y: 0px; --target-rot: 10deg; }
-        .kw-pos-4 { bottom: -20px; left: 50%; transform: translateX(-50%) scale(0.2); --target-rot: 0deg; }
+        .kw-pos-4 { bottom: -20px; left: 50%; transform: translateX(-50%) scale(0.2) translateZ(50px); --target-rot: 0deg; }
 
         @media (min-width: 768px) {
             .keyword-pill {
-                font-size: 1.05rem;
-                padding: 10px 20px;
+                font-size: 1.1rem;
+                padding: 10px 22px;
             }
             .kw-pos-0 { top: -28px; left: -35px; }
             .kw-pos-1 { top: -30px; right: -35px; }
@@ -306,13 +450,15 @@
 
         .bouquet-stage.popped .keyword-pill {
             opacity: 1;
-            transform: scale(1) rotate(var(--target-rot));
+            transform: scale(1) rotate(var(--target-rot)) translateZ(50px);
         }
         .bouquet-stage.popped .kw-pos-4 {
-            transform: translateX(-50%) scale(1) rotate(var(--target-rot));
+            transform: translateX(-50%) scale(1) rotate(var(--target-rot)) translateZ(50px);
         }
 
-        /* Glowing text below bouquet */
+        /* ==============================================
+           GLOWING HINT TEXT & TAPPING HAND ICON
+           ============================================== */
         .hint-container {
             margin-top: 38px;
             text-align: center;
@@ -324,50 +470,81 @@
         }
 
         .hint-text-badge {
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            border: 1px solid rgba(255, 105, 180, 0.4);
-            padding: 11px 26px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1.5px solid rgba(255, 105, 180, 0.6);
+            padding: 12px 28px;
             border-radius: 999px;
-            font-size: 1.08rem;
+            font-size: 1.12rem;
             font-weight: 600;
-            letter-spacing: 0.5px;
-            color: #ffe6eb;
-            text-shadow: 0 0 12px rgba(255, 77, 141, 0.85);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4), 0 0 22px rgba(255, 77, 141, 0.3);
+            letter-spacing: 0.6px;
+            color: #ffffff;
+            /* Rich neon text glow */
+            text-shadow: 0 0 10px #ff69b4, 0 0 20px #ff2a85, 0 0 35px #ff2a85, 0 0 50px #ff4d8d;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 30px rgba(255, 77, 141, 0.5), inset 0 0 15px rgba(255, 255, 255, 0.25);
             animation: pulse-glow 2.2s infinite ease-in-out;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             transition: all 0.3s ease;
+            position: relative;
         }
 
-        .hint-text-badge svg {
-            width: 20px;
-            height: 20px;
-            fill: #ff4d8d;
-            filter: drop-shadow(0 0 6px #ff2a85);
+        /* Animated tapping finger icon */
+        .hand-tap-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.35rem;
+            animation: finger-tap 1.6s ease-in-out infinite;
+            filter: drop-shadow(0 0 8px #ff2a85);
+        }
+
+        @keyframes finger-tap {
+            0%, 100% {
+                transform: translateY(0) scale(1);
+            }
+            30% {
+                transform: translateY(-5px) scale(1.15) rotate(-8deg);
+            }
+            50% {
+                transform: translateY(3px) scale(0.95) rotate(4deg);
+            }
+            70% {
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .hint-sparkle-star {
+            color: #ffd166;
+            animation: sparkle-rotate 2s linear infinite;
+        }
+
+        @keyframes sparkle-rotate {
+            0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.8; }
+            50% { transform: scale(1.3) rotate(180deg); opacity: 1; }
         }
 
         @keyframes pulse-glow {
             0%, 100% {
-                box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4), 0 0 18px rgba(255, 77, 141, 0.3);
-                border-color: rgba(255, 105, 180, 0.4);
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 25px rgba(255, 77, 141, 0.4);
+                border-color: rgba(255, 105, 180, 0.5);
                 transform: scale(1);
             }
             50% {
-                box-shadow: 0 8px 35px rgba(0, 0, 0, 0.5), 0 0 32px rgba(255, 77, 141, 0.65);
-                border-color: rgba(255, 105, 180, 0.8);
-                transform: scale(1.025);
+                box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6), 0 0 40px rgba(255, 77, 141, 0.8), inset 0 0 20px rgba(255, 255, 255, 0.4);
+                border-color: rgba(255, 105, 180, 0.95);
+                transform: scale(1.035);
             }
         }
 
         .hint-subtext {
-            font-size: 0.88rem;
-            color: rgba(255, 230, 245, 0.7);
-            letter-spacing: 0.3px;
+            font-size: 0.9rem;
+            color: rgba(255, 230, 245, 0.75);
+            letter-spacing: 0.4px;
+            text-shadow: 0 0 8px rgba(0,0,0,0.6);
         }
 
         /* Burst overlay during transition */
@@ -377,7 +554,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle, rgba(255, 182, 218, 0.95) 0%, rgba(255, 42, 133, 0.85) 50%, rgba(26, 9, 38, 0.98) 100%);
+            background: radial-gradient(circle, rgba(255, 182, 218, 0.95) 0%, rgba(255, 42, 133, 0.88) 50%, rgba(26, 9, 38, 0.98) 100%);
             opacity: 0;
             pointer-events: none;
             z-index: 50;
@@ -540,7 +717,7 @@
         }
 
         /* ==============================================
-           POPUP: BỨC THƯ TÌNH DÀNH CHO ÁNH TUYẾT
+           POPUP: BỨC THƯ TÌNH DÀNH RIÊNG CHO ÁNH TUYẾT
            ============================================== */
         .letter-modal-backdrop {
             position: fixed;
@@ -845,7 +1022,18 @@
          ============================================== -->
     <section id="phase-bouquet">
         <div class="bouquet-stage" id="bouquet-stage">
-            <div class="bouquet-float-wrap">
+            <div class="bouquet-float-wrap" id="bouquet-parallax-wrap">
+
+                <!-- MULTI-LAYER RADIANT AURA & GLOW BEHIND BOUQUET -->
+                <div class="bouquet-aura-container" id="bouquet-aura-box">
+                    <div class="aura-bloom"></div>
+                    <div class="aura-sunrays"></div>
+                    <div class="aura-orbit-ring"></div>
+                </div>
+
+                <!-- ORBITING SPARKLES & FIREFLIES CANVAS -->
+                <canvas id="bouquet-sparkles-canvas"></canvas>
+
                 <!-- SVG Hold Progress Ring -->
                 <svg class="hold-ring-svg" viewBox="0 0 300 300">
                     <defs>
@@ -859,7 +1047,7 @@
                     <circle class="hold-ring-bar" id="hold-ring-bar" cx="150" cy="150" r="140"></circle>
                 </svg>
 
-                <!-- Bouquet Main Image Container -->
+                <!-- Bouquet Main Image Container (with 3D pop depth) -->
                 <div class="bouquet-image-container" id="bouquet-circle">
                     <img id="bouquet-img-el" class="bouquet-img" src="assets/bouquet.jpg" alt="Bó hoa Ánh Tuyết">
                 </div>
@@ -873,15 +1061,14 @@
             </div>
         </div>
 
-        <!-- Glowing Hint Text below Bouquet -->
+        <!-- Glowing Hint Text with animated tapping hand icon -->
         <div class="hint-container">
             <div class="hint-text-badge" id="hint-badge">
-                <svg viewBox="0 0 24 24">
-                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                </svg>
+                <span class="hand-tap-icon" id="hint-icon">👆</span>
                 <span id="hint-text">Chạm vào bó hoa nhé</span>
+                <span class="hint-sparkle-star">✨</span>
             </div>
-            <div class="hint-subtext" id="hint-subtext">Món quà đặc biệt dành riêng cho Ánh Tuyết 🌸</div>
+            <div class="hint-subtext" id="hint-subtext">Món quà ma thuật dành riêng cho cô bé Ánh Tuyết 🌸</div>
         </div>
     </section>
 
@@ -981,7 +1168,8 @@
            ========================================================================= */
         const CONFIG = {
             crushName: "Ánh Tuyết",
-            // Đường dẫn nhạc nền (ưu tiên file bài hát bạn vừa thêm vào thư mục assets)
+            bouquetImage: 'assets/bouquet.jpg',
+            // Ưu tiên file bài hát bạn vừa thêm vào assets
             musicUrl: 'assets/chờ chút....mp3',
 
             // Từ khóa bay lên khi chạm vào bó hoa ở Giai đoạn 1
@@ -1152,7 +1340,68 @@
         initFloatingPetals();
 
         /* =========================================================================
-           2. AUDIO & NHẠC NỀN (BACKGROUND MUSIC)
+           2. HẠT SÁNG & ĐOM ĐÓM BAY QUANH BÓ HOA (BOUQUET SPARKLES CANVAS)
+           ========================================================================= */
+        const bouquetSparklesCanvas = document.getElementById('bouquet-sparkles-canvas');
+        const bCtx = bouquetSparklesCanvas.getContext('2d');
+        let bouquetMotes = [];
+
+        function initBouquetSparkles() {
+            bouquetSparklesCanvas.width = 480;
+            bouquetSparklesCanvas.height = 480;
+            bouquetMotes = [];
+            const count = 32;
+
+            for (let i = 0; i < count; i++) {
+                bouquetMotes.push({
+                    angle: Math.random() * Math.PI * 2,
+                    radiusX: 135 + Math.random() * 75,
+                    radiusY: 120 + Math.random() * 65,
+                    speed: (Math.random() * 0.012 + 0.008) * (Math.random() > 0.5 ? 1 : -1),
+                    size: Math.random() * 2.8 + 1.2,
+                    color: Math.random() > 0.4 ? '#ff69b4' : (Math.random() > 0.5 ? '#ffd166' : '#ffffff'),
+                    pulseSpeed: Math.random() * 0.04 + 0.02,
+                    pulseVal: Math.random() * Math.PI,
+                    tilt: (Math.random() - 0.5) * 0.5
+                });
+            }
+        }
+
+        function renderBouquetSparkles() {
+            bCtx.clearRect(0, 0, 480, 480);
+            const cx = 240;
+            const cy = 240;
+
+            for (let m of bouquetMotes) {
+                m.angle += m.speed;
+                m.pulseVal += m.pulseSpeed;
+                const alpha = Math.abs(Math.sin(m.pulseVal)) * 0.75 + 0.25;
+
+                // Elliptical orbit with tilt
+                const rawX = Math.cos(m.angle) * m.radiusX;
+                const rawY = Math.sin(m.angle) * m.radiusY;
+                const x = cx + rawX * Math.cos(m.tilt) - rawY * Math.sin(m.tilt);
+                const y = cy + rawX * Math.sin(m.tilt) + rawY * Math.cos(m.tilt);
+
+                bCtx.beginPath();
+                bCtx.arc(x, y, m.size, 0, Math.PI * 2);
+                bCtx.fillStyle = m.color;
+                bCtx.globalAlpha = alpha;
+                bCtx.shadowBlur = 10;
+                bCtx.shadowColor = m.color;
+                bCtx.fill();
+            }
+
+            bCtx.globalAlpha = 1;
+            bCtx.shadowBlur = 0;
+            requestAnimationFrame(renderBouquetSparkles);
+        }
+
+        initBouquetSparkles();
+        renderBouquetSparkles();
+
+        /* =========================================================================
+           3. AUDIO & NHẠC NỀN (BACKGROUND MUSIC)
            ========================================================================= */
         const bgAudio = document.getElementById('bg-audio');
         const btnMusic = document.getElementById('btn-music');
@@ -1189,13 +1438,17 @@
         });
 
         /* =========================================================================
-           3. GIAI ĐOẠN 1: BÓ HOA MA THUẬT (INTERACTIVE BOUQUET)
+           4. GIAI ĐOẠN 1: BÓ HOA MA THUẬT & 3D PARALLAX INTERACTION
            ========================================================================= */
         const phaseBouquet = document.getElementById('phase-bouquet');
         const bouquetStage = document.getElementById('bouquet-stage');
+        const bouquetParallaxWrap = document.getElementById('bouquet-parallax-wrap');
+        const bouquetAuraBox = document.getElementById('bouquet-aura-box');
+        const bouquetCircle = document.getElementById('bouquet-circle');
         const bouquetImgEl = document.getElementById('bouquet-img-el');
         const hintBadge = document.getElementById('hint-badge');
         const hintText = document.getElementById('hint-text');
+        const hintIcon = document.getElementById('hint-icon');
         const hintSubtext = document.getElementById('hint-subtext');
         const holdRingBar = document.getElementById('hold-ring-bar');
         const burstOverlay = document.getElementById('burst-overlay');
@@ -1213,6 +1466,64 @@
             }
         }
 
+        // ==========================================
+        // 3D PARALLAX EFFECT FOR BOUQUET (DESKTOP & MOBILE)
+        // ==========================================
+        let targetTiltX = 0;
+        let targetTiltY = 0;
+        let currentTiltX = 0;
+        let currentTiltY = 0;
+
+        // Mouse Move Parallax
+        window.addEventListener('mousemove', (e) => {
+            if (phaseBouquet.style.display === 'none') return;
+            const x = (e.clientX / window.innerWidth) * 2 - 1;
+            const y = (e.clientY / window.innerHeight) * 2 - 1;
+            targetTiltX = -y * 15; // pitch
+            targetTiltY = x * 15;  // yaw
+        });
+
+        // Mobile Device Orientation Gyroscope
+        window.addEventListener('deviceorientation', (e) => {
+            if (phaseBouquet.style.display === 'none') return;
+            if (e.gamma !== null && e.beta !== null) {
+                targetTiltY = Math.max(-18, Math.min(18, e.gamma * 0.45));
+                targetTiltX = Math.max(-18, Math.min(18, (e.beta - 45) * 0.35));
+            }
+        });
+
+        // Mobile Touch Move Parallax
+        window.addEventListener('touchmove', (e) => {
+            if (phaseBouquet.style.display === 'none') return;
+            if (e.touches && e.touches[0]) {
+                const x = (e.touches[0].clientX / window.innerWidth) * 2 - 1;
+                const y = (e.touches[0].clientY / window.innerHeight) * 2 - 1;
+                targetTiltX = -y * 14;
+                targetTiltY = x * 14;
+            }
+        }, { passive: true });
+
+        function animateParallax() {
+            if (phaseBouquet.style.display !== 'none') {
+                // Smooth interpolation (lerp)
+                currentTiltX += (targetTiltX - currentTiltX) * 0.08;
+                currentTiltY += (targetTiltY - currentTiltY) * 0.08;
+
+                // Tilt the 3D bouquet stage
+                bouquetStage.style.transform = `rotateX(${currentTiltX.toFixed(2)}deg) rotateY(${currentTiltY.toFixed(2)}deg)`;
+
+                // Invert slightly on the background aura to create stereoscopic depth separation
+                if (bouquetAuraBox) {
+                    bouquetAuraBox.style.transform = `translate(calc(-50% + ${(-currentTiltY * 1.6).toFixed(1)}px), calc(-50% + ${(currentTiltX * 1.6).toFixed(1)}px)) translateZ(-40px)`;
+                }
+            }
+            requestAnimationFrame(animateParallax);
+        }
+        animateParallax();
+
+        // ==========================================
+        // TAP & HOLD INTERACTIONS
+        // ==========================================
         let isPopped = false;
         let isHolding = false;
         let holdStartTime = 0;
@@ -1225,6 +1536,7 @@
             if (!isPopped) {
                 isPopped = true;
                 bouquetStage.classList.add('popped');
+                hintIcon.textContent = "⏳";
                 hintText.textContent = "Ấn giữ bó hoa để mở điều bất ngờ";
                 hintSubtext.textContent = "Nhấn và giữ khoảng 1.5 giây để khám phá Ngân hà Điều Ước ✨";
             }
@@ -1326,7 +1638,7 @@
         });
 
         /* =========================================================================
-           4. GIAI ĐOẠN 2: THREE.JS 3D WISHING GALAXY
+           5. GIAI ĐOẠN 2: THREE.JS 3D WISHING GALAXY
            ========================================================================= */
         const webglCanvas = document.getElementById('webgl-canvas');
         let scene, camera, renderer, controls;
@@ -1478,7 +1790,6 @@
                 const y = radius * Math.sin(theta) * Math.sin(phi) * 0.75;
                 const z = radius * Math.cos(phi);
 
-                // Render Crystal Card Texture on Canvas
                 const cardCanvas = document.createElement('canvas');
                 cardCanvas.width = 400;
                 cardCanvas.height = 510;
@@ -1830,7 +2141,7 @@
         });
 
         /* =========================================================================
-           5. GIAO DIỆN BỨC THƯ TÌNH DÀNH RIÊNG CHO ÁNH TUYẾT
+           6. GIAO DIỆN BỨC THƯ TÌNH DÀNH RIÊNG CHO ÁNH TUYẾT
            ========================================================================= */
         const btnLetter = document.getElementById('btn-letter');
         const letterModal = document.getElementById('letter-modal');
