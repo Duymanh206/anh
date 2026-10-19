@@ -981,8 +981,8 @@
            ========================================================================= */
         const CONFIG = {
             crushName: "Ánh Tuyết",
-            bouquetImage: 'assets/bouquet.jpg',
-            musicUrl: 'assets/music.mp3',
+            // Đường dẫn nhạc nền (ưu tiên file bài hát bạn vừa thêm vào thư mục assets)
+            musicUrl: 'assets/chờ chút....mp3',
 
             // Từ khóa bay lên khi chạm vào bó hoa ở Giai đoạn 1
             keywords: [
@@ -1158,7 +1158,11 @@
         const btnMusic = document.getElementById('btn-music');
         let isAudioPlaying = false;
 
-        bgAudio.src = CONFIG.musicUrl;
+        bgAudio.src = encodeURI(CONFIG.musicUrl);
+        bgAudio.onerror = () => {
+            console.log('Falling back to default music.mp3');
+            bgAudio.src = 'assets/music.mp3';
+        };
 
         function startMusic() {
             if (!isAudioPlaying) {
