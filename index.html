@@ -1,0 +1,1781 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Bó hoa ảnh - Chúc mừng 20/10</title>
+
+    <!-- Open Graph / Meta SEO -->
+    <meta name="title" content="Bó hoa ảnh - Chúc mừng 20/10">
+    <meta name="description" content="Món quà tương tác 3D lãng mạn và ngọt ngào nhân ngày Phụ nữ Việt Nam 20/10 ❤️">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Bó hoa ảnh - Chúc mừng 20/10 🌸">
+    <meta property="og:description" content="Chạm vào bó hoa để khám phá điều kỳ diệu và vũ trụ tình yêu 3D dành riêng cho em!">
+    <meta property="og:image" content="assets/bouquet.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Bó hoa ảnh - Chúc mừng 20/10 🌸">
+    <meta name="twitter:description" content="Món quà tương tác 3D lãng mạn và ngọt ngào nhân ngày Phụ nữ Việt Nam 20/10 ❤️">
+    <meta name="twitter:image" content="assets/bouquet.jpg">
+    <meta name="theme-color" content="#1a0926">
+
+    <!-- Google Font 'Mali' -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mali:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+
+    <!-- Three.js & OrbitControls -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+    <style>
+        :root {
+            --bg-dark-1: #07040a;
+            --bg-dark-2: #1a0926;
+            --pink-primary: #ff4d8d;
+            --pink-glow: #ff2a85;
+            --pink-light: #ffe6eb;
+            --gold-accent: #ffd166;
+            --text-wine: #7a1f3d;
+            --font-family: 'Mali', cursive, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--bg-dark-1) 0%, var(--bg-dark-2) 100%);
+            font-family: var(--font-family);
+            color: #ffffff;
+            position: relative;
+        }
+
+        /* Ambient cosmic radial glow */
+        .cosmic-glow {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 100vmax;
+            height: 100vmax;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle, rgba(175, 43, 140, 0.22) 0%, rgba(56, 14, 77, 0.15) 45%, transparent 70%);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Starry background canvas */
+        #stars-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        /* ========================
+           PHASE 1: BOUQUET SCREEN
+           ======================== */
+        #phase-bouquet {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        #phase-bouquet.fade-out {
+            opacity: 0;
+            transform: scale(1.12);
+            pointer-events: none;
+        }
+
+        .bouquet-stage {
+            position: relative;
+            width: 320px;
+            height: 320px;
+            max-width: 85vw;
+            max-height: 85vw;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        @media (min-width: 768px) {
+            .bouquet-stage {
+                width: 390px;
+                height: 390px;
+            }
+        }
+
+        /* Floating motion on bouquet */
+        .bouquet-float-wrap {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: floating 4.2s ease-in-out infinite;
+            will-change: transform;
+        }
+
+        @keyframes floating {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-14px) rotate(1deg);
+            }
+        }
+
+        /* Bouquet Image Container */
+        .bouquet-image-container {
+            position: relative;
+            width: 280px;
+            height: 280px;
+            max-width: 75vw;
+            max-height: 75vw;
+            border-radius: 50%;
+            padding: 8px;
+            background: radial-gradient(circle, rgba(255, 105, 180, 0.35) 0%, rgba(255, 77, 141, 0.1) 60%, transparent 80%);
+            box-shadow: 0 0 50px rgba(255, 77, 141, 0.4), inset 0 0 25px rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease, box-shadow 0.3s ease;
+        }
+
+        .bouquet-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            filter: drop-shadow(0 12px 30px rgba(0, 0, 0, 0.6));
+            pointer-events: none;
+        }
+
+        /* Hold ring progress */
+        .hold-ring-svg {
+            position: absolute;
+            top: -15px;
+            left: -15px;
+            width: calc(100% + 30px);
+            height: calc(100% + 30px);
+            pointer-events: none;
+            transform: rotate(-90deg);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .hold-ring-bg {
+            fill: none;
+            stroke: rgba(255, 255, 255, 0.12);
+            stroke-width: 4;
+        }
+
+        .hold-ring-bar {
+            fill: none;
+            stroke: url(#ring-gradient);
+            stroke-width: 5;
+            stroke-linecap: round;
+            stroke-dasharray: 880;
+            stroke-dashoffset: 880;
+            transition: stroke-dashoffset 0.05s linear;
+            filter: drop-shadow(0 0 10px #ff2a85);
+        }
+
+        /* Press & Hold Vibration Animation */
+        .bouquet-stage.holding .bouquet-float-wrap {
+            animation: bouquet-shake 0.1s infinite alternate;
+        }
+
+        .bouquet-stage.holding .hold-ring-svg {
+            opacity: 1;
+        }
+
+        .bouquet-stage.holding .bouquet-image-container {
+            box-shadow: 0 0 70px rgba(255, 42, 133, 0.8), inset 0 0 35px rgba(255, 255, 255, 0.5);
+        }
+
+        @keyframes bouquet-shake {
+            0% { transform: translate(1.5px, 1.5px) rotate(0.6deg) scale(0.98); }
+            50% { transform: translate(-1.5px, -1px) rotate(-0.6deg) scale(0.98); }
+            100% { transform: translate(1px, -1.5px) rotate(0.4deg) scale(0.98); }
+        }
+
+        /* Small Polaroid Photos nestled around the bouquet */
+        .polaroid-nest {
+            position: absolute;
+            width: 78px;
+            height: 96px;
+            background: #ffffff;
+            border-radius: 6px;
+            padding: 5px 5px 18px 5px;
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.55), 0 0 15px rgba(255, 105, 180, 0.4);
+            opacity: 0;
+            transform: scale(0.1) rotate(0deg);
+            transition: all 0.75s cubic-bezier(0.34, 1.56, 0.64, 1);
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .polaroid-nest img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 3px;
+            display: block;
+        }
+
+        /* Tiny tape decoration */
+        .polaroid-nest::before {
+            content: '';
+            position: absolute;
+            top: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 24px;
+            height: 9px;
+            background: rgba(255, 220, 235, 0.8);
+            border-radius: 2px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+
+        /* 6 positions around bouquet */
+        .polaroid-pos-0 { top: -20px; left: -10px; --target-rot: -12deg; }
+        .polaroid-pos-1 { top: -25px; right: -15px; --target-rot: 14deg; }
+        .polaroid-pos-2 { top: 40%; left: -42px; --target-rot: -18deg; }
+        .polaroid-pos-3 { top: 38%; right: -42px; --target-rot: 16deg; }
+        .polaroid-pos-4 { bottom: -10px; left: 10px; --target-rot: -8deg; }
+        .polaroid-pos-5 { bottom: -15px; right: 8px; --target-rot: 9deg; }
+
+        @media (min-width: 768px) {
+            .polaroid-nest {
+                width: 95px;
+                height: 118px;
+                padding: 6px 6px 22px 6px;
+            }
+            .polaroid-pos-0 { top: -25px; left: -25px; }
+            .polaroid-pos-1 { top: -30px; right: -25px; }
+            .polaroid-pos-2 { top: 40%; left: -60px; }
+            .polaroid-pos-3 { top: 38%; right: -60px; }
+            .polaroid-pos-4 { bottom: -15px; left: 0px; }
+            .polaroid-pos-5 { bottom: -18px; right: 0px; }
+        }
+
+        .bouquet-stage.popped .polaroid-nest {
+            opacity: 1;
+            transform: scale(1) rotate(var(--target-rot));
+        }
+
+        /* Glowing text below bouquet */
+        .hint-container {
+            margin-top: 36px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            z-index: 15;
+        }
+
+        .hint-text-badge {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 105, 180, 0.35);
+            padding: 10px 24px;
+            border-radius: 999px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            color: #ffe6eb;
+            text-shadow: 0 0 12px rgba(255, 77, 141, 0.8);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 77, 141, 0.25);
+            animation: pulse-glow 2.2s infinite ease-in-out;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .hint-text-badge svg {
+            width: 20px;
+            height: 20px;
+            fill: #ff4d8d;
+            filter: drop-shadow(0 0 6px #ff2a85);
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% {
+                box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4), 0 0 18px rgba(255, 77, 141, 0.3);
+                border-color: rgba(255, 105, 180, 0.35);
+                transform: scale(1);
+            }
+            50% {
+                box-shadow: 0 8px 35px rgba(0, 0, 0, 0.5), 0 0 30px rgba(255, 77, 141, 0.6);
+                border-color: rgba(255, 105, 180, 0.7);
+                transform: scale(1.025);
+            }
+        }
+
+        .hint-subtext {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.6);
+            letter-spacing: 0.3px;
+        }
+
+        /* Burst flash transition */
+        #burst-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255, 160, 205, 0.95) 0%, rgba(255, 42, 133, 0.8) 50%, rgba(26, 9, 38, 0.95) 100%);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 50;
+            transition: opacity 0.6s ease;
+        }
+
+        #burst-overlay.active {
+            opacity: 1;
+        }
+
+        /* ========================
+           PHASE 2: 3D GALAXY SPACE
+           ======================== */
+        #phase-galaxy {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 20;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        #phase-galaxy.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        #webgl-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        /* UI Overlays in Phase 2 */
+        .galaxy-ui-top {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 30;
+        }
+
+        .glass-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35), 0 0 15px rgba(255, 105, 180, 0.25);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+        }
+
+        .glass-btn:hover {
+            transform: scale(1.1);
+            background: rgba(255, 255, 255, 0.22);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 0 25px rgba(255, 77, 141, 0.6);
+            border-color: rgba(255, 105, 180, 0.7);
+        }
+
+        .glass-btn:active {
+            transform: scale(0.94);
+        }
+
+        .glass-btn svg {
+            width: 22px;
+            height: 22px;
+            fill: #ffffff;
+            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.3));
+        }
+
+        /* Little badge for letter button */
+        .badge-pulse {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ff2a85;
+            box-shadow: 0 0 8px #ff2a85;
+            animation: badge-pulse-anim 1.5s infinite;
+        }
+
+        @keyframes badge-pulse-anim {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.3); opacity: 0.6; }
+        }
+
+        /* Bottom hint badge in Phase 2 */
+        .galaxy-hint-bottom {
+            position: absolute;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(18, 8, 30, 0.65);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 105, 180, 0.25);
+            padding: 8px 20px;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            color: rgba(255, 230, 240, 0.85);
+            pointer-events: none;
+            z-index: 30;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+            letter-spacing: 0.3px;
+            text-align: center;
+            max-width: 90vw;
+            white-space: nowrap;
+        }
+
+        .galaxy-hint-bottom svg {
+            width: 16px;
+            height: 16px;
+            fill: #ff69b4;
+            flex-shrink: 0;
+        }
+
+        /* ========================
+           POPUP: LOVE LETTER MODAL
+           ======================== */
+        .letter-modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(8, 3, 14, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+            padding: 20px;
+        }
+
+        .letter-modal-backdrop.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .letter-card {
+            position: relative;
+            width: 100%;
+            max-width: 480px;
+            background: var(--pink-light);
+            border-radius: 24px;
+            padding: 36px 30px 32px 30px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), 0 0 30px rgba(255, 105, 180, 0.35);
+            border: 2px solid rgba(255, 182, 193, 0.8);
+            transform: scale(0.85) translateY(30px);
+            transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+            color: var(--text-wine);
+            overflow: hidden;
+        }
+
+        .letter-modal-backdrop.open .letter-card {
+            transform: scale(1) translateY(0);
+        }
+
+        /* Elegant floral stamp header */
+        .letter-seal {
+            position: absolute;
+            top: 18px;
+            left: 28px;
+            width: 32px;
+            height: 32px;
+            opacity: 0.7;
+        }
+
+        .letter-close-btn {
+            position: absolute;
+            top: 16px;
+            right: 18px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(194, 24, 91, 0.12);
+            border: none;
+            color: #c2185b;
+            font-size: 1.3rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .letter-close-btn:hover {
+            background: #c2185b;
+            color: #ffffff;
+            transform: scale(1.1);
+        }
+
+        .letter-title {
+            font-size: 1.55rem;
+            font-weight: 700;
+            color: #8a1f44;
+            margin-bottom: 20px;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .letter-content {
+            font-size: 1.12rem;
+            line-height: 1.8;
+            min-height: 110px;
+            font-weight: 500;
+            color: #5a1e33;
+            white-space: pre-wrap;
+            position: relative;
+        }
+
+        .typewriter-cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1.15em;
+            background-color: #c2185b;
+            margin-left: 2px;
+            vertical-align: middle;
+            animation: blink 0.8s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .letter-signature {
+            margin-top: 28px;
+            text-align: right;
+            font-size: 1.25rem;
+            font-weight: 700;
+            font-style: italic;
+            color: #8a1f44;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.6s ease;
+        }
+
+        .letter-signature.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Floating mini hearts in letter */
+        .card-bg-heart {
+            position: absolute;
+            bottom: -20px;
+            right: -20px;
+            width: 120px;
+            height: 120px;
+            fill: rgba(255, 182, 193, 0.3);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Audio indicator wave in Glass Button */
+        .audio-bars {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            height: 18px;
+        }
+
+        .audio-bar {
+            width: 3px;
+            height: 100%;
+            background: #ffffff;
+            border-radius: 2px;
+            animation: sound-bar 1.2s infinite ease-in-out;
+        }
+
+        .audio-bar:nth-child(1) { animation-delay: 0.1s; height: 40%; }
+        .audio-bar:nth-child(2) { animation-delay: 0.3s; height: 90%; }
+        .audio-bar:nth-child(3) { animation-delay: 0.2s; height: 60%; }
+        .audio-bar:nth-child(4) { animation-delay: 0.4s; height: 75%; }
+
+        .audio-muted .audio-bar {
+            animation: none !important;
+            height: 4px !important;
+            opacity: 0.5;
+        }
+
+        @keyframes sound-bar {
+            0%, 100% { transform: scaleY(0.3); }
+            50% { transform: scaleY(1); }
+        }
+
+        /* ========================
+           PHOTO LIGHTBOX POPUP (3D CLICK)
+           ======================== */
+        .photo-lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 4, 18, 0.82);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 120;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.35s ease;
+            padding: 20px;
+        }
+
+        .photo-lightbox.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .lightbox-card {
+            background: #ffffff;
+            padding: 12px 12px 38px 12px;
+            border-radius: 12px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7), 0 0 35px rgba(255, 105, 180, 0.5);
+            max-width: 90vw;
+            max-height: 82vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            transform: scale(0.85);
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .photo-lightbox.open .lightbox-card {
+            transform: scale(1);
+        }
+
+        .lightbox-img {
+            max-width: 100%;
+            max-height: 60vh;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .lightbox-caption {
+            margin-top: 14px;
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: #7a1f3d;
+            text-align: center;
+        }
+
+        .lightbox-close-btn {
+            position: absolute;
+            top: -16px;
+            right: -16px;
+            width: 38px;
+            height: 38px;
+            background: #ff2a85;
+            color: #ffffff;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            font-size: 1.2rem;
+            transition: transform 0.2s ease;
+        }
+
+        .lightbox-close-btn:hover {
+            transform: scale(1.15);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Deep cosmic glow & starry background -->
+    <div class="cosmic-glow"></div>
+    <canvas id="stars-canvas"></canvas>
+
+    <!-- Burst overlay during transition -->
+    <div id="burst-overlay"></div>
+
+    <!-- Background Music Audio Element -->
+    <audio id="bg-audio" preload="auto" loop></audio>
+
+    <!-- ==============================================
+         PHASE 1: BÓ HOA TƯƠNG TÁC (MÀN HÌNH MỞ ĐẦU)
+         ============================================== -->
+    <section id="phase-bouquet">
+        <div class="bouquet-stage" id="bouquet-stage">
+            <div class="bouquet-float-wrap">
+                <!-- SVG Hold Progress Ring -->
+                <svg class="hold-ring-svg" viewBox="0 0 300 300">
+                    <defs>
+                        <linearGradient id="ring-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#ff7eb3" />
+                            <stop offset="50%" stop-color="#ff2a85" />
+                            <stop offset="100%" stop-color="#ffd166" />
+                        </linearGradient>
+                    </defs>
+                    <circle class="hold-ring-bg" cx="150" cy="150" r="140"></circle>
+                    <circle class="hold-ring-bar" id="hold-ring-bar" cx="150" cy="150" r="140"></circle>
+                </svg>
+
+                <!-- Bouquet Main Image -->
+                <div class="bouquet-image-container" id="bouquet-circle">
+                    <img id="bouquet-img-el" class="bouquet-img" src="" alt="Bó hoa 20/10">
+                </div>
+
+                <!-- 6 Polaroid Photos popped around bouquet -->
+                <div class="polaroid-nest polaroid-pos-0" id="polaroid-0"><img src="" alt="Ảnh kỷ niệm"></div>
+                <div class="polaroid-nest polaroid-pos-1" id="polaroid-1"><img src="" alt="Ảnh kỷ niệm"></div>
+                <div class="polaroid-nest polaroid-pos-2" id="polaroid-2"><img src="" alt="Ảnh kỷ niệm"></div>
+                <div class="polaroid-nest polaroid-pos-3" id="polaroid-3"><img src="" alt="Ảnh kỷ niệm"></div>
+                <div class="polaroid-nest polaroid-pos-4" id="polaroid-4"><img src="" alt="Ảnh kỷ niệm"></div>
+                <div class="polaroid-nest polaroid-pos-5" id="polaroid-5"><img src="" alt="Ảnh kỷ niệm"></div>
+            </div>
+        </div>
+
+        <!-- Glowing Hint Text below Bouquet -->
+        <div class="hint-container">
+            <div class="hint-text-badge" id="hint-badge">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                </svg>
+                <span id="hint-text">Chạm vào bó hoa</span>
+            </div>
+            <div class="hint-subtext" id="hint-subtext">Món quà ngọt ngào dành riêng cho ngày 20/10 🌸</div>
+        </div>
+    </section>
+
+    <!-- ==============================================
+         PHASE 2: VŨ TRỤ TÌNH YÊU 3D (3D GALAXY SPACE)
+         ============================================== -->
+    <section id="phase-galaxy">
+        <canvas id="webgl-canvas"></canvas>
+
+        <!-- Top-Right Glassmorphic Controls -->
+        <div class="galaxy-ui-top">
+            <!-- Music Toggle Button -->
+            <button class="glass-btn" id="btn-music" title="Bật / Tắt nhạc">
+                <div class="audio-bars" id="audio-bars-icon">
+                    <div class="audio-bar"></div>
+                    <div class="audio-bar"></div>
+                    <div class="audio-bar"></div>
+                    <div class="audio-bar"></div>
+                </div>
+            </button>
+
+            <!-- Letter Popup Button -->
+            <button class="glass-btn" id="btn-letter" title="Mở bức thư tình">
+                <span class="badge-pulse"></span>
+                <svg viewBox="0 0 24 24">
+                    <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                </svg>
+            </button>
+
+            <!-- Close / Back Button -->
+            <button class="glass-btn" id="btn-back" title="Quay lại bó hoa">
+                <svg viewBox="0 0 24 24">
+                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Bottom Guidance Badge -->
+        <div class="galaxy-hint-bottom">
+            <svg viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z"/>
+            </svg>
+            <span>Kéo để xoay, cuộn hoặc chụm hai ngón để phóng to</span>
+        </div>
+    </section>
+
+    <!-- ==============================================
+         POPUP BỨC THƯ TÌNH (LOVE LETTER POPUP)
+         ============================================== -->
+    <div class="letter-modal-backdrop" id="letter-modal">
+        <div class="letter-card">
+            <!-- Close X Button -->
+            <button class="letter-close-btn" id="btn-close-letter" aria-label="Đóng bức thư">&times;</button>
+
+            <!-- Floral Stamp -->
+            <svg class="letter-seal" viewBox="0 0 24 24" fill="#c2185b">
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            </svg>
+
+            <!-- Title -->
+            <div class="letter-title" id="letter-title-el">Thân gửi em, ❤️</div>
+
+            <!-- Typewriter Content -->
+            <div class="letter-content" id="letter-content-el"></div>
+
+            <!-- Signature -->
+            <div class="letter-signature" id="letter-sig-el">Mãi yêu em,</div>
+
+            <!-- Background decorative heart -->
+            <svg class="card-bg-heart" viewBox="0 0 24 24">
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            </svg>
+        </div>
+    </div>
+
+    <!-- ==============================================
+         LIGHTBOX POPUP KHI CLICK VÀO ẢNH TRONG 3D
+         ============================================== -->
+    <div class="photo-lightbox" id="photo-lightbox">
+        <div class="lightbox-card">
+            <button class="lightbox-close-btn" id="btn-close-lightbox">&times;</button>
+            <img class="lightbox-img" id="lightbox-img-el" src="" alt="Ảnh kỷ niệm">
+            <div class="lightbox-caption" id="lightbox-caption-el">Khoảnh khắc ngọt ngào ❤️</div>
+        </div>
+    </div>
+
+    <!-- ==============================================
+         JAVASCRIPT LOGIC & CONFIGURATION
+         ============================================== -->
+    <script>
+        /* =========================================================================
+           V. CẤU HÌNH DỄ DÀNG THAY ĐỔI (CONFIG)
+           Bạn có thể thay đổi đường dẫn ảnh, bài hát và nội dung bức thư tại đây!
+           ========================================================================= */
+        const CONFIG = {
+            // Đường dẫn ảnh bó hoa chính ở màn hình mở đầu
+            bouquetImage: 'assets/bouquet.jpg',
+
+            // Đường dẫn nhạc nền (ưu tiên file local trong assets/, tự động fallback nếu cần)
+            musicUrl: 'assets/music.mp3',
+
+            // Danh sách các bức ảnh kỷ niệm (18-20 ảnh chất lượng cao để bay trong không gian 3D)
+            memoryPhotos: [
+                'https://images.unsplash.com/photo-1518895949257-7621c3c786d7?w=600&auto=format&fit=crop&q=80',
+                'https://images.unsplash.com/photo-1526047932273-341f2a7631f9?w=600&auto=format&fit=crop&q=80',
+                'https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=600&auto=format&fit=crop&q=80',
+                'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&auto=format&fit=crop&q=80',
+                'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=600&auto=format&fit=crop&q=80',
+                'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600&auto=format&fit=crop&q=80',
+                'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&auto=format&fit=crop&q=80',
+                'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&auto=format&fit=crop&q=80',
+                'https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=600&auto=format&fit=crop&q=80',
+                'https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=600&auto=format&fit=crop&q=80',
+                'https://images.unsplash.com/photo-1492633423870-43d1cd2775eb?w=600&auto=format&fit=crop&q=80',
+                'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=600&auto=format&fit=crop&q=80',
+                'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&auto=format&fit=crop&q=80',
+                'https://images.unsplash.com/photo-1496449903678-68ddcb189a24?w=600&auto=format&fit=crop&q=80',
+                'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&auto=format&fit=crop&q=80',
+                'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=600&auto=format&fit=crop&q=80',
+                'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=600&auto=format&fit=crop&q=80',
+                'https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=600&auto=format&fit=crop&q=80'
+            ],
+
+            // Các dòng chữ chúc mừng màu hồng phát sáng bay trong không gian 3D
+            greetings: [
+                "Chúc mừng 20/10 thật hạnh phúc ❤️",
+                "Chúc em luôn xinh đẹp ✨",
+                "Mãi yêu em 💖",
+                "Chúc em luôn vui vẻ và hạnh phúc 🌸",
+                "Mong mọi điều dịu dàng sẽ đến với em 💫",
+                "Chúc em thật nhiều may mắn 🍀",
+                "Chúc em luôn yêu đời 💐"
+            ],
+
+            // Nội dung bức thư tình
+            letter: {
+                title: "Thân gửi em,",
+                content: "Chúc một nửa thế giới của anh luôn xinh đẹp, rạng rỡ, ngập tràn niềm vui và luôn nở nụ cười trên môi trong ngày 20/10 này nhé!",
+                signature: "Mãi yêu em,"
+            }
+        };
+
+        /* =========================================================================
+           1. BACKGROUND: NGÔI SAO LẤP LÁNH & SAO BĂNG (TWINKLING & SHOOTING STARS)
+           ========================================================================= */
+        const starsCanvas = document.getElementById('stars-canvas');
+        const starsCtx = starsCanvas.getContext('2d');
+        let stars = [];
+        let shootingStars = [];
+
+        function resizeStarsCanvas() {
+            starsCanvas.width = window.innerWidth;
+            starsCanvas.height = window.innerHeight;
+            initStars();
+        }
+
+        function initStars() {
+            stars = [];
+            const count = Math.min(160, Math.floor((starsCanvas.width * starsCanvas.height) / 7000));
+            for (let i = 0; i < count; i++) {
+                stars.push({
+                    x: Math.random() * starsCanvas.width,
+                    y: Math.random() * starsCanvas.height,
+                    radius: Math.random() * 1.6 + 0.4,
+                    alpha: Math.random() * 0.8 + 0.2,
+                    speed: Math.random() * 0.02 + 0.008,
+                    color: Math.random() > 0.35 ? '#ffffff' : (Math.random() > 0.5 ? '#ffd2e8' : '#ffe8a3')
+                });
+            }
+        }
+
+        function spawnShootingStar() {
+            const startX = Math.random() * starsCanvas.width * 0.8;
+            const startY = Math.random() * starsCanvas.height * 0.4;
+            const length = Math.random() * 80 + 90;
+            const angle = (Math.PI / 4) + (Math.random() * 0.2 - 0.1); // ~45 deg
+            shootingStars.push({
+                x: startX,
+                y: startY,
+                length: length,
+                speed: Math.random() * 5 + 6,
+                angle: angle,
+                opacity: 1,
+                decay: Math.random() * 0.015 + 0.012
+            });
+        }
+
+        function renderStars() {
+            starsCtx.clearRect(0, 0, starsCanvas.width, starsCanvas.height);
+
+            // Draw twinkling stars
+            for (let star of stars) {
+                star.alpha += star.speed;
+                const currentAlpha = Math.abs(Math.sin(star.alpha));
+                starsCtx.beginPath();
+                starsCtx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+                starsCtx.fillStyle = star.color;
+                starsCtx.globalAlpha = currentAlpha;
+                starsCtx.shadowBlur = star.radius > 1.2 ? 6 : 0;
+                starsCtx.shadowColor = star.color;
+                starsCtx.fill();
+            }
+
+            // Draw shooting stars
+            for (let i = shootingStars.length - 1; i >= 0; i--) {
+                const s = shootingStars[i];
+                const endX = s.x - Math.cos(s.angle) * s.length;
+                const endY = s.y - Math.sin(s.angle) * s.length;
+
+                const grad = starsCtx.createLinearGradient(s.x, s.y, endX, endY);
+                grad.addColorStop(0, `rgba(255, 255, 255, ${s.opacity})`);
+                grad.addColorStop(0.3, `rgba(255, 105, 180, ${s.opacity * 0.8})`);
+                grad.addColorStop(1, `rgba(255, 105, 180, 0)`);
+
+                starsCtx.beginPath();
+                starsCtx.moveTo(s.x, s.y);
+                starsCtx.lineTo(endX, endY);
+                starsCtx.strokeStyle = grad;
+                starsCtx.lineWidth = 2.2;
+                starsCtx.lineCap = 'round';
+                starsCtx.globalAlpha = 1;
+                starsCtx.shadowBlur = 10;
+                starsCtx.shadowColor = '#ff2a85';
+                starsCtx.stroke();
+
+                s.x += Math.cos(s.angle) * s.speed;
+                s.y += Math.sin(s.angle) * s.speed;
+                s.opacity -= s.decay;
+
+                if (s.opacity <= 0 || s.x > starsCanvas.width + 100 || s.y > starsCanvas.height + 100) {
+                    shootingStars.splice(i, 1);
+                }
+            }
+
+            // Random chance to spawn a shooting star
+            if (Math.random() < 0.015 && shootingStars.length < 3) {
+                spawnShootingStar();
+            }
+
+            starsCtx.globalAlpha = 1;
+            starsCtx.shadowBlur = 0;
+            requestAnimationFrame(renderStars);
+        }
+
+        window.addEventListener('resize', resizeStarsCanvas);
+        resizeStarsCanvas();
+        renderStars();
+
+        /* =========================================================================
+           2. AUDIO & NHẠC NỀN (BACKGROUND MUSIC)
+           ========================================================================= */
+        const bgAudio = document.getElementById('bg-audio');
+        const btnMusic = document.getElementById('btn-music');
+        let isAudioPlaying = false;
+
+        bgAudio.src = CONFIG.musicUrl;
+
+        function startMusic() {
+            if (!isAudioPlaying) {
+                bgAudio.play().then(() => {
+                    isAudioPlaying = true;
+                    btnMusic.classList.remove('audio-muted');
+                }).catch(err => {
+                    console.log('Audio autoplay prevented or error:', err);
+                });
+            }
+        }
+
+        btnMusic.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (isAudioPlaying) {
+                bgAudio.pause();
+                isAudioPlaying = false;
+                btnMusic.classList.add('audio-muted');
+            } else {
+                bgAudio.play();
+                isAudioPlaying = true;
+                btnMusic.classList.remove('audio-muted');
+            }
+        });
+
+        /* =========================================================================
+           3. GIAI ĐOẠN 1: BÓ HOA TƯƠNG TÁC (CLICK & HOLD)
+           ========================================================================= */
+        const phaseBouquet = document.getElementById('phase-bouquet');
+        const bouquetStage = document.getElementById('bouquet-stage');
+        const bouquetImgEl = document.getElementById('bouquet-img-el');
+        const hintBadge = document.getElementById('hint-badge');
+        const hintText = document.getElementById('hint-text');
+        const hintSubtext = document.getElementById('hint-subtext');
+        const holdRingBar = document.getElementById('hold-ring-bar');
+        const burstOverlay = document.getElementById('burst-overlay');
+
+        bouquetImgEl.src = CONFIG.bouquetImage;
+        // Fallback for bouquet image
+        bouquetImgEl.onerror = () => {
+            bouquetImgEl.src = 'https://images.unsplash.com/photo-1526047932273-341f2a7631f9?w=800&auto=format&fit=crop&q=80';
+        };
+
+        // Populate the 6 small Polaroid photos
+        for (let i = 0; i < 6; i++) {
+            const polaroidEl = document.getElementById(`polaroid-${i}`);
+            const img = polaroidEl.querySelector('img');
+            img.src = CONFIG.memoryPhotos[i % CONFIG.memoryPhotos.length];
+        }
+
+        let isPopped = false;
+        let isHolding = false;
+        let holdStartTime = 0;
+        let holdAnimFrame = null;
+        const HOLD_DURATION = 1500; // 1.5 seconds
+        const CIRCLE_CIRCUMFERENCE = 2 * Math.PI * 140; // ~879.64
+
+        // Interaction 1: Click / Tap on bouquet
+        function handleBouquetClick() {
+            startMusic();
+            if (!isPopped) {
+                isPopped = true;
+                bouquetStage.classList.add('popped');
+                hintText.textContent = "Ấn giữ bó hoa";
+                hintSubtext.textContent = "Nhấn và giữ khoảng 1.5 giây để mở cánh cổng vũ trụ 💫";
+            }
+        }
+
+        bouquetStage.addEventListener('click', () => {
+            if (!isPopped) {
+                handleBouquetClick();
+            }
+        });
+
+        hintBadge.addEventListener('click', () => {
+            if (!isPopped) {
+                handleBouquetClick();
+            }
+        });
+
+        // Interaction 2: Press & Hold (Mouse and Touch)
+        function startHold(e) {
+            if (!isPopped) return;
+            isHolding = true;
+            holdStartTime = performance.now();
+            bouquetStage.classList.add('holding');
+
+            if (navigator.vibrate) {
+                try { navigator.vibrate(25); } catch(e){}
+            }
+
+            function updateHoldProgress(now) {
+                if (!isHolding) return;
+                const elapsed = now - holdStartTime;
+                const progress = Math.min(elapsed / HOLD_DURATION, 1);
+                const offset = CIRCLE_CIRCUMFERENCE * (1 - progress);
+                holdRingBar.style.strokeDashoffset = offset;
+
+                if (progress >= 1) {
+                    // Trigger explosion transition to Phase 2!
+                    triggerGalaxyTransition();
+                    cancelHold();
+                    return;
+                }
+                holdAnimFrame = requestAnimationFrame(updateHoldProgress);
+            }
+
+            holdAnimFrame = requestAnimationFrame(updateHoldProgress);
+        }
+
+        function cancelHold() {
+            if (!isHolding) return;
+            isHolding = false;
+            bouquetStage.classList.remove('holding');
+            if (holdAnimFrame) {
+                cancelAnimationFrame(holdAnimFrame);
+                holdAnimFrame = null;
+            }
+            holdRingBar.style.strokeDashoffset = CIRCLE_CIRCUMFERENCE;
+        }
+
+        // Mouse events
+        bouquetStage.addEventListener('mousedown', (e) => {
+            if (e.button === 0) startHold(e);
+        });
+        window.addEventListener('mouseup', cancelHold);
+        bouquetStage.addEventListener('mouseleave', cancelHold);
+
+        // Touch events
+        bouquetStage.addEventListener('touchstart', (e) => {
+            startHold(e);
+        }, { passive: true });
+        window.addEventListener('touchend', cancelHold);
+        window.addEventListener('touchcancel', cancelHold);
+
+        /* =========================================================================
+           TRANSITION: CHUYỂN TỪ GIAI ĐOẠN 1 SANG GIAI ĐOẠN 2
+           ========================================================================= */
+        const phaseGalaxy = document.getElementById('phase-galaxy');
+
+        function triggerGalaxyTransition() {
+            if (navigator.vibrate) {
+                try { navigator.vibrate([40, 60, 80]); } catch(e){}
+            }
+
+            // Burst flash
+            burstOverlay.classList.add('active');
+            phaseBouquet.classList.add('fade-out');
+
+            setTimeout(() => {
+                phaseBouquet.style.display = 'none';
+                phaseGalaxy.classList.add('active');
+                burstOverlay.classList.remove('active');
+
+                // Animate camera flying in
+                resetGalaxyCamera();
+            }, 600);
+        }
+
+        // Return from Phase 2 back to Phase 1
+        const btnBack = document.getElementById('btn-back');
+        btnBack.addEventListener('click', () => {
+            phaseGalaxy.classList.remove('active');
+            burstOverlay.classList.add('active');
+
+            setTimeout(() => {
+                phaseBouquet.style.display = 'flex';
+                // Trigger reflow
+                void phaseBouquet.offsetWidth;
+                phaseBouquet.classList.remove('fade-out');
+                burstOverlay.classList.remove('active');
+            }, 450);
+        });
+
+        /* =========================================================================
+           4. GIAI ĐOẠN 2: THREE.JS 3D GALAXY SPACE
+           ========================================================================= */
+        const webglCanvas = document.getElementById('webgl-canvas');
+        let scene, camera, renderer, controls;
+        let photoMeshes = [];
+        let textSprites = [];
+        let heartMeshes = [];
+        let starParticles;
+        let isGalaxyInit = false;
+
+        function initThreeGalaxy() {
+            if (isGalaxyInit) return;
+            isGalaxyInit = true;
+
+            // Scene
+            scene = new THREE.Scene();
+
+            // Camera
+            camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 2500);
+            camera.position.set(0, 35, 230);
+
+            // Renderer
+            renderer = new THREE.WebGLRenderer({
+                canvas: webglCanvas,
+                alpha: true,
+                antialias: true
+            });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+            // Controls
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            controls.rotateSpeed = 0.7;
+            controls.zoomSpeed = 0.85;
+            controls.minDistance = 60;
+            controls.maxDistance = 500;
+            controls.autoRotate = true;
+            controls.autoRotateSpeed = 0.45;
+
+            // Lights
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.95);
+            scene.add(ambientLight);
+
+            const pointLight1 = new THREE.PointLight(0xff4d8d, 2.5, 600);
+            pointLight1.position.set(0, 80, 80);
+            scene.add(pointLight1);
+
+            const pointLight2 = new THREE.PointLight(0xffaacc, 1.8, 600);
+            pointLight2.position.set(0, -60, -60);
+            scene.add(pointLight2);
+
+            // Create 3D Elements
+            createStardustParticles();
+            createMemoryPhotoCards();
+            createGlowingTextSprites();
+            createExtrudedHearts();
+
+            // Raycaster for clicking photos
+            setupPhotoRaycaster();
+
+            // Animation Loop
+            animateGalaxy();
+        }
+
+        function resetGalaxyCamera() {
+            if (!isGalaxyInit) {
+                initThreeGalaxy();
+            }
+            camera.position.set(0, 70, 340);
+            controls.target.set(0, 0, 0);
+            // Smooth glide in
+            let startTime = performance.now();
+            function glideCam(now) {
+                let p = Math.min((now - startTime) / 1200, 1);
+                let ease = 1 - Math.pow(1 - p, 3);
+                camera.position.z = 340 - (110 * ease);
+                camera.position.y = 70 - (35 * ease);
+                if (p < 1) requestAnimationFrame(glideCam);
+            }
+            requestAnimationFrame(glideCam);
+        }
+
+        // Stardust & Fireflies in 3D
+        function createStardustParticles() {
+            const particleCount = 750;
+            const geometry = new THREE.BufferGeometry();
+            const positions = new Float32Array(particleCount * 3);
+            const colors = new Float32Array(particleCount * 3);
+
+            const colorPalette = [
+                new THREE.Color(0xff4d8d),
+                new THREE.Color(0xff99bb),
+                new THREE.Color(0xffd166),
+                new THREE.Color(0xffffff)
+            ];
+
+            for (let i = 0; i < particleCount; i++) {
+                const radius = 60 + Math.random() * 260;
+                const theta = Math.random() * Math.PI * 2;
+                const phi = Math.acos(2 * Math.random() - 1);
+
+                positions[i * 3] = radius * Math.sin(phi) * Math.cos(theta);
+                positions[i * 3 + 1] = radius * Math.sin(phi) * Math.sin(theta) * 0.7;
+                positions[i * 3 + 2] = radius * Math.cos(phi);
+
+                const c = colorPalette[Math.floor(Math.random() * colorPalette.length)];
+                colors[i * 3] = c.r;
+                colors[i * 3 + 1] = c.g;
+                colors[i * 3 + 2] = c.b;
+            }
+
+            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+            // Circular glow texture for particle
+            const pCanvas = document.createElement('canvas');
+            pCanvas.width = 64;
+            pCanvas.height = 64;
+            const pCtx = pCanvas.getContext('2d');
+            const grad = pCtx.createRadialGradient(32, 32, 0, 32, 32, 32);
+            grad.addColorStop(0, 'rgba(255, 255, 255, 1)');
+            grad.addColorStop(0.3, 'rgba(255, 120, 180, 0.8)');
+            grad.addColorStop(1, 'rgba(255, 120, 180, 0)');
+            pCtx.fillStyle = grad;
+            pCtx.fillRect(0, 0, 64, 64);
+
+            const pTexture = new THREE.CanvasTexture(pCanvas);
+
+            const material = new THREE.PointsMaterial({
+                size: 5.5,
+                map: pTexture,
+                transparent: true,
+                vertexColors: true,
+                blending: THREE.AdditiveBlending,
+                depthWrite: false
+            });
+
+            starParticles = new THREE.Points(geometry, material);
+            scene.add(starParticles);
+        }
+
+        // Memory Photos (Polaroid Cards in 3D)
+        function createMemoryPhotoCards() {
+            const photos = CONFIG.memoryPhotos;
+            const total = photos.length;
+            const textureLoader = new THREE.TextureLoader();
+
+            photos.forEach((photoUrl, index) => {
+                // Spherical Fibonacci distribution
+                const phi = Math.acos(-1 + (2 * index) / total);
+                const theta = Math.sqrt(total * Math.PI) * phi;
+                const radius = 135 + (index % 3) * 14;
+
+                const x = radius * Math.cos(theta) * Math.sin(phi);
+                const y = radius * Math.sin(theta) * Math.sin(phi) * 0.75;
+                const z = radius * Math.cos(phi);
+
+                // Create offscreen Polaroid texture with rounded photo & border
+                const cardCanvas = document.createElement('canvas');
+                cardCanvas.width = 400;
+                cardCanvas.height = 490;
+                const ctx = cardCanvas.getContext('2d');
+
+                // Draw initial placeholder card
+                drawPolaroidCard(ctx, null, index);
+
+                const cardTexture = new THREE.CanvasTexture(cardCanvas);
+                const geometry = new THREE.PlaneGeometry(28, 34);
+                const material = new THREE.MeshBasicMaterial({
+                    map: cardTexture,
+                    side: THREE.DoubleSide,
+                    transparent: true
+                });
+
+                const mesh = new THREE.Mesh(geometry, material);
+                mesh.position.set(x, y, z);
+                mesh.lookAt(0, 0, 0);
+
+                // Add slight gentle random rotation
+                mesh.rotation.z += (Math.random() - 0.5) * 0.35;
+
+                // Store metadata for bobbing & lightbox
+                mesh.userData = {
+                    initialY: y,
+                    seed: Math.random() * 10,
+                    bobSpeed: 1.2 + Math.random() * 0.8,
+                    photoUrl: photoUrl,
+                    index: index
+                };
+
+                scene.add(mesh);
+                photoMeshes.push(mesh);
+
+                // Asynchronously load real image onto canvas texture
+                const img = new Image();
+                img.crossOrigin = 'anonymous';
+                img.onload = () => {
+                    drawPolaroidCard(ctx, img, index);
+                    cardTexture.needsUpdate = true;
+                };
+                img.onerror = () => {
+                    // Try placeholder fallback
+                    img.src = `https://picsum.photos/seed/${index + 10}/400/400`;
+                };
+                img.src = photoUrl;
+            });
+        }
+
+        function drawPolaroidCard(ctx, img, index) {
+            ctx.clearRect(0, 0, 400, 490);
+
+            // Card shadow & background
+            ctx.fillStyle = '#ffffff';
+            ctx.beginPath();
+            ctx.roundRect(10, 10, 380, 470, 18);
+            ctx.fill();
+
+            // Inner photo frame
+            const captions = [
+                "20/10 Rực Rỡ 🌸",
+                "Nụ Cười Của Em ✨",
+                "Khoảnh Khắc Ngọt Ngào 💖",
+                "Mãi Yêu Em ❤️",
+                "Hạnh Phúc Đong Đầy 🌷",
+                "Xinh Đẹp & Bình Yên 💫",
+                "Yêu Thương Vô Tận 🌹"
+            ];
+
+            if (img) {
+                ctx.save();
+                ctx.beginPath();
+                ctx.roundRect(26, 26, 348, 348, 12);
+                ctx.clip();
+                ctx.drawImage(img, 26, 26, 348, 348);
+                ctx.restore();
+            } else {
+                // Gradient placeholder
+                const pGrad = ctx.createLinearGradient(26, 26, 374, 374);
+                pGrad.addColorStop(0, '#ffd1dc');
+                pGrad.addColorStop(1, '#ff80ab');
+                ctx.fillStyle = pGrad;
+                ctx.beginPath();
+                ctx.roundRect(26, 26, 348, 348, 12);
+                ctx.fill();
+            }
+
+            // Bottom text / handwritten sticker
+            ctx.fillStyle = '#7a1f3d';
+            ctx.font = '600 24px Mali, cursive, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText(captions[index % captions.length], 200, 425);
+
+            // Tiny heart icon at bottom
+            ctx.fillStyle = '#ff2a85';
+            ctx.font = '20px sans-serif';
+            ctx.fillText('❤️', 200, 455);
+        }
+
+        // Glowing Neon 3D Wishes
+        function createGlowingTextSprites() {
+            const greetings = CONFIG.greetings;
+            const total = greetings.length;
+
+            greetings.forEach((text, index) => {
+                const angle = (index / total) * Math.PI * 2;
+                const radius = 95 + (index % 2) * 20;
+                const x = Math.cos(angle) * radius;
+                const y = Math.sin(index * 1.5) * 45;
+                const z = Math.sin(angle) * radius;
+
+                // Render high-res text on canvas
+                const tCanvas = document.createElement('canvas');
+                tCanvas.width = 650;
+                tCanvas.height = 160;
+                const ctx = tCanvas.getContext('2d');
+
+                // Glow effect
+                ctx.font = 'bold 36px Mali, cursive, sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+
+                // Outer neon glow
+                ctx.shadowColor = '#ff2a85';
+                ctx.shadowBlur = 24;
+                ctx.fillStyle = '#ff69b4';
+                ctx.fillText(text, 325, 80);
+
+                // Inner bright core
+                ctx.shadowBlur = 10;
+                ctx.fillStyle = '#ffffff';
+                ctx.fillText(text, 325, 80);
+
+                const texture = new THREE.CanvasTexture(tCanvas);
+                const spriteMaterial = new THREE.SpriteMaterial({
+                    map: texture,
+                    transparent: true,
+                    blending: THREE.AdditiveBlending
+                });
+
+                const sprite = new THREE.Sprite(spriteMaterial);
+                sprite.position.set(x, y, z);
+                sprite.scale.set(48, 12, 1);
+
+                sprite.userData = {
+                    initialY: y,
+                    seed: index * 1.3
+                };
+
+                scene.add(sprite);
+                textSprites.push(sprite);
+            });
+        }
+
+        // Extruded 3D Hearts Floating in Space
+        function createExtrudedHearts() {
+            // Heart shape definition
+            const heartShape = new THREE.Shape();
+            const x = 0, y = 0;
+            heartShape.moveTo(x + 5, y + 5);
+            heartShape.bezierCurveTo(x + 5, y + 5, x + 4, y, x, y);
+            heartShape.bezierCurveTo(x - 6, y, x - 6, y + 7, x - 6, y + 7);
+            heartShape.bezierCurveTo(x - 6, y + 11, x - 2, y + 15.4, x + 5, y + 19);
+            heartShape.bezierCurveTo(x + 12, y + 15.4, x + 16, y + 11, x + 16, y + 7);
+            heartShape.bezierCurveTo(x + 16, y + 7, x + 16, y, x + 10, y);
+            heartShape.bezierCurveTo(x + 7, y, x + 5, y + 5, x + 5, y + 5);
+
+            const extrudeSettings = {
+                depth: 2,
+                bevelEnabled: true,
+                bevelSegments: 2,
+                steps: 1,
+                bevelSize: 0.8,
+                bevelThickness: 0.8
+            };
+
+            const heartGeometry = new THREE.ExtrudeGeometry(heartShape, extrudeSettings);
+            heartGeometry.center();
+
+            const heartColors = [0xff3366, 0xff69b4, 0xff1493, 0xffaacc];
+
+            for (let i = 0; i < 30; i++) {
+                const color = heartColors[i % heartColors.length];
+                const material = new THREE.MeshPhongMaterial({
+                    color: color,
+                    emissive: 0x330011,
+                    specular: 0xffffff,
+                    shininess: 90
+                });
+
+                const heart = new THREE.Mesh(heartGeometry, material);
+                const radius = 65 + Math.random() * 160;
+                const theta = Math.random() * Math.PI * 2;
+                const phi = Math.acos(2 * Math.random() - 1);
+
+                heart.position.set(
+                    radius * Math.sin(phi) * Math.cos(theta),
+                    radius * Math.sin(phi) * Math.sin(theta) * 0.7,
+                    radius * Math.cos(phi)
+                );
+
+                const scale = 0.55 + Math.random() * 0.65;
+                heart.scale.set(scale, -scale, scale); // invert Y for correct heart orientation
+
+                heart.rotation.x = Math.random() * Math.PI;
+                heart.rotation.y = Math.random() * Math.PI;
+
+                heart.userData = {
+                    initialY: heart.position.y,
+                    rotSpeedX: (Math.random() - 0.5) * 0.02,
+                    rotSpeedY: (Math.random() - 0.5) * 0.02,
+                    seed: Math.random() * 10
+                };
+
+                scene.add(heart);
+                heartMeshes.push(heart);
+            }
+        }
+
+        // Raycasting for clicking memory photos in 3D
+        function setupPhotoRaycaster() {
+            const raycaster = new THREE.Raycaster();
+            const mouse = new THREE.Vector2();
+            let pointerDownPos = { x: 0, y: 0 };
+
+            webglCanvas.addEventListener('pointerdown', (e) => {
+                pointerDownPos.x = e.clientX;
+                pointerDownPos.y = e.clientY;
+            });
+
+            webglCanvas.addEventListener('pointerup', (e) => {
+                // If user dragged more than 6px, it's orbit rotation, not click!
+                const dist = Math.hypot(e.clientX - pointerDownPos.x, e.clientY - pointerDownPos.y);
+                if (dist > 6) return;
+
+                mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+                mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+
+                raycaster.setFromCamera(mouse, camera);
+                const intersects = raycaster.intersectObjects(photoMeshes);
+
+                if (intersects.length > 0) {
+                    const clickedMesh = intersects[0].object;
+                    openPhotoLightbox(clickedMesh.userData.photoUrl, clickedMesh.userData.index);
+                }
+            });
+        }
+
+        // Lightbox popup for photo
+        const photoLightbox = document.getElementById('photo-lightbox');
+        const lightboxImgEl = document.getElementById('lightbox-img-el');
+        const lightboxCaptionEl = document.getElementById('lightbox-caption-el');
+        const btnCloseLightbox = document.getElementById('btn-close-lightbox');
+
+        function openPhotoLightbox(url, index) {
+            lightboxImgEl.src = url;
+            const captions = [
+                "Chúc em ngày 20/10 luôn tràn ngập tiếng cười 🌸",
+                "Ánh mắt dịu dàng sưởi ấm mọi khoảnh khắc ✨",
+                "Mỗi ngày bên em đều là một ngày đặc biệt ❤️",
+                "Mong em luôn rạng rỡ như đóa hồng sớm mai 🌹",
+                "Hạnh phúc ngọt ngào nhất là được thấy em vui 💖",
+                "Cảm ơn em vì đã đến và làm thế giới thêm tươi đẹp 🌷"
+            ];
+            lightboxCaptionEl.textContent = captions[index % captions.length];
+            photoLightbox.classList.add('open');
+        }
+
+        btnCloseLightbox.addEventListener('click', () => {
+            photoLightbox.classList.remove('open');
+        });
+        photoLightbox.addEventListener('click', (e) => {
+            if (e.target === photoLightbox) {
+                photoLightbox.classList.remove('open');
+            }
+        });
+
+        // Main 3D Animation Loop
+        function animateGalaxy(timestamp) {
+            requestAnimationFrame(animateGalaxy);
+            const time = timestamp * 0.001 || 0;
+
+            if (controls) controls.update();
+
+            // Bobbing photo cards
+            for (let mesh of photoMeshes) {
+                mesh.position.y = mesh.userData.initialY + Math.sin(time * mesh.userData.bobSpeed + mesh.userData.seed) * 4.5;
+            }
+
+            // Bobbing text sprites
+            for (let sprite of textSprites) {
+                sprite.position.y = sprite.userData.initialY + Math.sin(time * 1.4 + sprite.userData.seed) * 3.5;
+            }
+
+            // Spinning & Pulsing hearts
+            for (let heart of heartMeshes) {
+                heart.rotation.x += heart.userData.rotSpeedX;
+                heart.rotation.y += heart.userData.rotSpeedY;
+                heart.position.y = heart.userData.initialY + Math.sin(time * 1.8 + heart.userData.seed) * 4;
+            }
+
+            // Rotating stardust
+            if (starParticles) {
+                starParticles.rotation.y = time * 0.035;
+                starParticles.rotation.x = Math.sin(time * 0.02) * 0.05;
+            }
+
+            if (renderer && scene && camera) {
+                renderer.render(scene, camera);
+            }
+        }
+
+        window.addEventListener('resize', () => {
+            if (camera && renderer) {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            }
+        });
+
+        /* =========================================================================
+           5. GIAO DIỆN BỨC THƯ TÌNH (LOVE LETTER POPUP & TYPEWRITER)
+           ========================================================================= */
+        const btnLetter = document.getElementById('btn-letter');
+        const letterModal = document.getElementById('letter-modal');
+        const btnCloseLetter = document.getElementById('btn-close-letter');
+        const letterTitleEl = document.getElementById('letter-title-el');
+        const letterContentEl = document.getElementById('letter-content-el');
+        const letterSigEl = document.getElementById('letter-sig-el');
+
+        let typewriterTimeout = null;
+
+        letterTitleEl.textContent = CONFIG.letter.title;
+        letterSigEl.textContent = CONFIG.letter.signature;
+
+        function openLetter() {
+            letterModal.classList.add('open');
+            startTypewriter();
+        }
+
+        function closeLetter() {
+            letterModal.classList.remove('open');
+            if (typewriterTimeout) {
+                clearTimeout(typewriterTimeout);
+            }
+        }
+
+        function startTypewriter() {
+            const text = CONFIG.letter.content;
+            letterContentEl.innerHTML = '<span class="typewriter-cursor"></span>';
+            letterSigEl.classList.remove('visible');
+
+            let index = 0;
+            if (typewriterTimeout) clearTimeout(typewriterTimeout);
+
+            function typeChar() {
+                if (index < text.length) {
+                    const currentText = text.substring(0, index + 1);
+                    letterContentEl.innerHTML = currentText + '<span class="typewriter-cursor"></span>';
+                    index++;
+                    typewriterTimeout = setTimeout(typeChar, 38 + Math.random() * 20);
+                } else {
+                    // Remove blinking cursor and show signature
+                    letterContentEl.innerHTML = text;
+                    setTimeout(() => {
+                        letterSigEl.classList.add('visible');
+                    }, 250);
+                }
+            }
+
+            typewriterTimeout = setTimeout(typeChar, 300);
+        }
+
+        btnLetter.addEventListener('click', openLetter);
+        btnCloseLetter.addEventListener('click', closeLetter);
+        letterModal.addEventListener('click', (e) => {
+            if (e.target === letterModal) closeLetter();
+        });
+
+    </script>
+</body>
+</html>
